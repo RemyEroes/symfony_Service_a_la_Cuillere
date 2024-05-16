@@ -1,0 +1,9 @@
+@import './font.css';
+
+.font-uber-bold {
+    font-family: 'uber_movebold';
+}
+
+.font-uber-medium {
+    font-family: 'uber_movemedium';
+}

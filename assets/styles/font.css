@@ -1,0 +1,19 @@
+
+@font-face {
+    font-family: 'uber_movebold';
+    src: url('/src/fonts/ubermovebold-webfont.woff2') format('woff2'),
+         url('/src/fonts/ubermovebold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'uber_movemedium';
+    src: url('/src/fonts/ubermovemedium-webfont.woff2') format('woff2'),
+         url('/src/fonts/ubermovemedium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
