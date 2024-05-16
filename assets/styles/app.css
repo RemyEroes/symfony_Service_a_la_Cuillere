@@ -1,4 +1,5 @@
 @import './font.css';
+@import './list-grid.css';
 
 .font-uber-bold {
     font-family: 'uber_movebold';
@@ -7,3 +8,38 @@
 .font-uber-medium {
     font-family: 'uber_movemedium';
 }
+
+
+
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 80px;
+    background-color: #9e9e9ed9;
+}
+
+.header-logo{
+    background-color: #585858d9;
+    margin-left: 20px;
+
+    height: 70%;
+    width: 200px;
+}
+
+.header-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 2px 5px;
+    margin-right: 10px ;
+    border: 1px solid #a43434d9;
+}
+
+.header-link{
+    font-family: 'uber_movebold';
+}
+
+

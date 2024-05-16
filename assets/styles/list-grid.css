@@ -1,0 +1,41 @@
+.list-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Cinq colonnes de largeur égale */
+    gap: 20px; /* Espacement entre les éléments */
+}
+
+@media only screen and (max-width: 1024px) {
+    .list-grid {
+        grid-template-columns: repeat(3, 1fr); /* Trois colonnes sur iPad */
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .list-grid {
+        grid-template-columns: repeat(2, 1fr); /* Deux colonnes sur téléphone */
+    }
+}
+
+
+.list-card-recipe-container{
+    background-color: gray;
+    width: 250px;
+    height: 250px;
+}
+
+.list-card-image{
+    background-color: #f1f1f1;
+    width: 100%;
+    height: 100px;
+}
+
+.recipe-image{
+    height: 100%;
+}
+
+
+
+.list-card-name{
+    border: 1px solid #000;
+    width: 100%;
+}

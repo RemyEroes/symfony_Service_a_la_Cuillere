@@ -24,31 +24,6 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    // #[Route(path: '/register', name: 'app_register')]
-    // public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
-    // {
-    //     // $username = $request->request->get('username');
-    //     // $email = $request->request->get('email');
-    //     // $plainPassword = $request->request->get('password');
-    
-    //     // // Créez une nouvelle instance de votre entité utilisateur (ou toute autre logique de gestion des utilisateurs que vous utilisez).
-    //     // $user = new User();
-    //     // $user->setUsername($username);
-    //     // $user->setEmail($email);
-    
-    //     // // Encodez le mot de passe avant de l'enregistrer en base de données.
-    //     // $encodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
-    //     // $user->setPassword($encodedPassword);
-    
-    //     // // Enregistrez l'utilisateur en base de données, vous devrez probablement ajuster cette étape selon votre logique d'application.
-    //     // // Par exemple, en utilisant Doctrine ORM :
-    //     // // $entityManager = $this->getDoctrine()->getManager();
-    //     // // $entityManager->persist($user);
-    //     // // $entityManager->flush();
-    
-    //     // // Redirigez l'utilisateur vers une autre page après l'inscription, par exemple la page d'accueil.
-    //     // return $this->redirectToRoute('homepage');
-    // }
 
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
