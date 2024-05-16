@@ -1,0 +1,19 @@
+{#------------------- header ------------------------#}
+
+{% block body %}
+<div class="font-uber-bold w-full h-40 lg:h-20 flex justify-between items-center bg-orange-400">
+        <div class="header-logo w-96 h-3/4 ml-6 bg-orange-900 ">
+            <a href="{{ url('home') }}">
+                logo here
+            </a>
+        </div>
+        <div class="header-nav h-3/4 flex justify-between items-center mr-10">
+            <ul class="flex justify-between items-center">
+                <li class="mr-10 p-2 text-xl" ><a href="{{ url('home') }}">Login</a></li>
+                <li class="mr-10 p-2 text-xl" ><a href="{{ url('home') }}">Register</a></li>
+            </ul>
+        </div>
+</div>
+
+
+{% endblock body %}
