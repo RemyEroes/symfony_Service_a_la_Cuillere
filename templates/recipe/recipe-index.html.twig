@@ -6,9 +6,15 @@
 {% block title "Toutes nos recettes" %}
 
 {% block body %}
-lorem ipsum
-<h1 class="place-content-center  w-100 text-3xl font-bold underline">Toutes nos recettes</h1>
 
-{% include '/recipe/recipe-list.html.twig' %}
+    {% include '/header/header-logged.html.twig' %}
+
+    <div class="m-5">
+        <h1 class="place-content-center  w-100 text-3xl font-bold underline">Toutes nos recettes</h1>
+
+        {% include '/recipe/recipe-list.html.twig' with {'recipes': recipes} %}
+    </div>
+
+
 
 {% endblock body %}

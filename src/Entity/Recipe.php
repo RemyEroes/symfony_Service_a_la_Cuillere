@@ -37,6 +37,9 @@ class Recipe
     #[ORM\OneToMany(targetEntity: Quantity::class, mappedBy: 'recipe')]
     private Collection $quantities;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->quantities = new ArrayCollection();
@@ -140,6 +143,18 @@ class Recipe
                 $quantity->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
