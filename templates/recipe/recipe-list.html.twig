@@ -3,24 +3,41 @@
 
 <div class="list-grid">
 
-    {% for recipe in recipes %}
 
-    <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
-        <div class="list-card-recipe-container">
-            <div class="list-card-image">
-                <img class="recipe-image" src="{{ asset('images/recipes/' ~ recipe.image) }}" alt="{{ recipe.name }}">
-            </div>
-            <div class="list-card-name">
-                <h2>{{ recipe.name|capitalize }}</h2>
-            </div>
-            <div class="list-card-text">
-                <p>Lorem ips umdz ea mcihd zeiaupdh,zeaiudh nzeaouydg nzeaouygdzea uyg,dza euyg ,dzaeouy,</p>
-            </div>
+    {# if filters == true #}
+    {% if filters == true %}
 
-        </div>
-    </a>
+        {% for recipe_common_ingredients in recipes|reverse %}
+            {% for recipe in recipe_common_ingredients%}
+                <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
+                    <div class="list-card-recipe-container">
+                        <div class="list-card-image">
+                            <img class="recipe-image" src="{{ asset('images/recipes|reverse/' ~ recipe.image) }}" alt="{{ recipe.name }}">
+                        </div>
+                        <div class="list-card-name">
+                            <h2>{{ recipe.name|capitalize }}</h2>
+                        </div>
+                        <div class="list-card-text">
+                            <p>Lorem ips umdz ea mcihd zeiaupdh,zeaiudh nzeaouydg nzeaouygdzea uyg,dza euyg ,dzaeouy,</p>
+                        </div>
+                        <div class="list-card-text">
+                            {% for ingredient in recipe.ingredients %}
+                                <span class="badge badge-primary">{{ ingredient }}</span>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </a>
+            {% endfor %}
+        {% endfor %}
     
-    {% endfor %}
+    {% elseif filters == false %}
+    
+
+    
+    
+    
+    {% endif %}
 
 </div>
 

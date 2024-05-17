@@ -10,59 +10,57 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class RecipeController extends AbstractController
 {
     #[Route('/recettes', name: 'recipe_list')]
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+        require_once __DIR__ . '/../Utils/sort_recipes_ingredients_fav.php';
+        require_once __DIR__ . '/../Utils/get_ingredients_from_filters.php';
+        require_once __DIR__ . '/../Utils/get_recipes_from_ingredients.php';
+        require_once __DIR__ . '/../Utils/filter_infos_recipes.php';
+        
         $requestFilters = $request->query->all();
 
         // sauvegarde les paramètres s'ils existent
         if (!empty($requestFilters)) {
+            //check presence du filtre "ingredients"
             $filters = isset($requestFilters['ingredients']) ? $requestFilters['ingredients'] : null;
+            
             if ($filters) {
+                // decouper les filtres par "--"
                 $filters_array = preg_split('/--/', $filters);
-                dump($filters_array);
 
-                foreach ($filters_array as $filter) {
-                    $filter_capitalized = ucfirst($filter);
-                    echo $filter_capitalized;
-                    $bdd_ingredient =  $entityManagerInterface->getRepository(Ingredient::class)->findOneBy(['name' => $filter_capitalized]);
 
-                    // ajoute si pas null
-                    if ($bdd_ingredient) {
-                        $ingredients_array[] = $bdd_ingredient;
-                    }
-                }
+                $ingredients_array = get_ingredients_from_filters($filters_array, $entityManagerInterface);
+                $filtered_recipes = get_recipes_from_ingredients($ingredients_array, $entityManagerInterface);
+                $filtered_recipes = filter_infos_recipes($filtered_recipes, $entityManagerInterface);
 
-                // dump($ingredients_array);
+                // dump($filtered_recipes);
 
-                // Récupérer la liste des recettes filtrées
-                foreach ($ingredients_array as $ingredient) {
-                    $this_ingredient = $entityManagerInterface->getRepository(Quantity::class)->findBy(['ingredient' => $ingredient->getId()]);
-                    // prednre le champ recipe_id
-                    foreach ($this_ingredient as $recipe_id) {
-                        $filtered_recipes_ids[] = $recipe_id->getRecipe()->getId();
-                    }
-                }
-                
-                //recette by id
-                $filtered_recipes[] = $entityManagerInterface->getRepository(Recipe::class)->find($recipe_id);
-                dump($filtered_recipes);
+                // creation d'un tableau associatyif avec x valeurs en foncyion du nombre de filtres
+                $FINAL_RECIPE_LIST = sort_recipes_by_ingredients_and_fav($filtered_recipes, $filters_array);
+
+                // dump($FINAL_RECIPE_LIST);
+
+                // SI FILTRES afficher les recettes filtrées
+                return $this->render('recipe/recipe-index.html.twig', [
+                    'recipes' => $FINAL_RECIPE_LIST,
+                    'filters' => true,
+                ]);
             }
         }
-
 
         // SI PAS DE FILTRES
 
         // Récupérer la liste des recettes complette
         $recipes_list = $entityManagerInterface->getRepository(Recipe::class)->findAll();
 
-        // Passer la liste des recettes au template Twig
+        // Passer la liste des recettes au template 
         return $this->render('recipe/recipe-index.html.twig', [
             'recipes' => $recipes_list,
+            'filters' => false,
         ]);
     }
 
