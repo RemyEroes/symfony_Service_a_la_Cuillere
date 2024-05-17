@@ -20,6 +20,10 @@ function get_recipes_from_ingredients($ingredients_array, $entityManagerInterfac
 
 
     // Récupérer les recettes filtrées
+    if (empty($filtered_recipes_ids)) {
+        return [];
+    }
+    
     foreach ($filtered_recipes_ids as $recipe_id) {
         $filtered_recipes[] = $entityManagerInterface->getRepository(Recipe::class)->find($recipe_id);
     }

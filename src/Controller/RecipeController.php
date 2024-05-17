@@ -16,6 +16,11 @@ class RecipeController extends AbstractController
     #[Route('/recettes', name: 'recipe_list')]
     public function index(Request $request, EntityManagerInterface $entityManagerInterface): Response
     {
+
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+
         require_once __DIR__ . '/../Utils/sort_recipes_ingredients_fav.php';
         require_once __DIR__ . '/../Utils/get_ingredients_from_filters.php';
         require_once __DIR__ . '/../Utils/get_recipes_from_ingredients.php';
@@ -35,6 +40,15 @@ class RecipeController extends AbstractController
 
                 $ingredients_array = get_ingredients_from_filters($filters_array, $entityManagerInterface);
                 $filtered_recipes = get_recipes_from_ingredients($ingredients_array, $entityManagerInterface);
+
+                // si tableau vide retourner un twig vide
+                if (empty($filtered_recipes)) {
+                    return $this->render('recipe/recipe-index.html.twig', [
+                        'recipes' => [],
+                        'filters' => true,
+                    ]);
+                }
+
                 $filtered_recipes = filter_infos_recipes($filtered_recipes, $entityManagerInterface);
 
                 // dump($filtered_recipes);
