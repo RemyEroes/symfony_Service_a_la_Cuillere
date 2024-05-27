@@ -1,0 +1,42 @@
+{% block ingredient_list %}
+
+
+<div class="list-ingredients-grid">
+
+    {# NO INGREDIENTS TO SHOW #}
+    {% if ingredients is empty %}
+
+                no ingredients
+
+    {% else %}
+    
+        {# INGREDIENTS TO SHOW #}
+        {% for ingredient in ingredients %}
+            <a href="{{ path('ingredient_show', {'id': ingredient.id}) }}">
+                <div class="list-card-ingredient-container">
+                    <div class="list-card-ingredient-image">
+                        {#<img src="{{ asset('images/ingredients/' ~ ingredient.image) }}" alt="{{ ingredient.name }}">#}
+                        <img src="{{ asset('images/ingredients/' ~ ingredient.image) }}"  alt="{{ ingredient.name }}"  onerror="this.onerror=null; this.src='{{ asset('images/ingredients/on-error-ingredient.jpeg') }}';">
+                    </div>
+                    <div class="list-card-ingredient-name">
+                    {{ ingredient.name }}
+                </div>
+                </div>
+            </a>
+        {% endfor %}
+
+       {#
+
+        {% for recipe in recipes %}
+        <a href="{{ path('recipe_show', {'id': ingredient.id}) }}">
+            <div class="list-card-ingredient-container">
+                {{ ingredient.name }}
+            </div>
+        </a>
+    {% endfor %}
+
+       #}
+    {% endif %}
+</div>
+    
+    {% endblock ingredient_list %}

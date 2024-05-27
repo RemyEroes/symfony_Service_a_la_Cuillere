@@ -1,5 +1,6 @@
 @import './font.css';
 @import './list-grid.css';
+@import './ingredients-list.css';
 
 .font-uber-bold {
     font-family: 'uber_movebold';

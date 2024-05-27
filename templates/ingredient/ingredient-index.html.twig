@@ -1,0 +1,20 @@
+{#------------------- Ingredient Index ------------------------#}
+
+{% extends "base.html.twig" %}
+
+{# titre de la page #}
+{% block title "Tous nos ingredients" %}
+
+{% block body %}
+
+    {% include '/header/header-logged.html.twig' %}
+
+    <div class="m-5">
+        <h1 class="place-content-center  w-100 text-3xl font-bold underline">Tous les ingrédients:</h1>
+
+        {% include '/ingredient/ingredient-list.html.twig' with {'ingredients': ingredients} %}
+    </div>
+
+
+
+{% endblock body %}
