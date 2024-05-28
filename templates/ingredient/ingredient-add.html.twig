@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ajouter un ingrédient:</h1>
+
+    <form method="post" action="{{ path('ingredient_add') }}" enctype="multipart/form-data">
+        
+        <div class="form-ingredient">
+            <div class="form-group">
+                <label for="name-ingredient">Nom</label>
+                <input type="text" id="name-ingredient" name="name-ingredient" class="form-control" required>
+            </div>
+
+            <div class="form-group checkbox-nom-pluriel">
+                <label for="nom-pluriel">Nom au pluriel ?</label>
+                <input type="radio" id="oui" name="choice" value="oui">
+                <label for="oui">Oui</label><br>
+                <input type="radio" id="non" name="choice" value="non" checked>
+                <label for="non">Non</label><br>
+            </div>
+
+            <div class="form-group nom-pluriel">
+                <label for="name-ingredient-1">Nom au pluriel</label>
+                <input type="text" id="name-ingredient-1" name="name-pluriel" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" id="image" name="image" class="form-control" accept="image/jpeg, image/png">
+            </div>
+
+            
+         </div>
+
+        <button class="add-more-button">add More ingredients</button>
+
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    
+{% endblock %}

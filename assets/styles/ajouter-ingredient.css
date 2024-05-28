@@ -1,0 +1,21 @@
+.form-group{
+    background-color: orange;
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+input[type="text"]{
+    border: solid 1px black;
+}
+
+
+/* nom pluriel caché */
+.nom-pluriel{
+    display: none;
+}
+
+
+.add-more-button{
+    background-color: green;
+    border: 1px solid black;
+}

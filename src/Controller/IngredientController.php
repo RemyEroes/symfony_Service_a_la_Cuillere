@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Ingredient;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 
 
 class IngredientController extends AbstractController
@@ -27,7 +29,7 @@ class IngredientController extends AbstractController
         ]);
     }
 
-    #[Route('/ingredient/{id}', name: 'ingredient_show')]
+    #[Route('/ingredient/{id<\d+>}', name: 'ingredient_show')]
     public function show(int $id, EntityManagerInterface $entityManagerInterface): Response
     {
         // Only authenticated users can access this page
@@ -47,6 +49,74 @@ class IngredientController extends AbstractController
             'recipes' => $recipes
         ]);
     }
+
+
+    #[Route('/ingredient/ajouter', name: 'ingredient_add')]
+    public function add(Request $request, EntityManagerInterface $entityManagerInterface, KernelInterface $kernel): Response
+    {
+        // Only authenticated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        require_once __DIR__ . '/../Utils/move_file_and_get_filemame.php';
+
+        if ($request->isMethod('POST')) {
+
+            $formData = $request->request->all();
+            $name_ingredient = $formData['name-ingredient'];
+            if (!empty($name_ingredient)) {
+                $ingredient = new Ingredient();
+
+                // nom
+                $ingredient->setName($name_ingredient);
+
+                // nom pluriel
+                $checked_nom_pluriel = $formData['choice'] === 'oui' ? true : false;
+                if ($checked_nom_pluriel) {
+                    $ingredient->setNameMany($formData['name-pluriel']);
+                }
+
+
+                //image
+                $imageFile = $request->files->get('image');
+                //si une image, la mettre dans public/images/ingredients
+                if ($imageFile) {
+                    $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $name_ingredient, $kernel);
+                    $ingredient->setImage($newFilename);
+                }
+
+                $entityManagerInterface->persist($ingredient);
+                $entityManagerInterface->flush();
+
+                return $this->redirectToRoute('ingredients_list');
+
+            }
+            dump($formData);
+        }
+
+        return $this->render('ingredient/ingredient-add.html.twig');
+
+
+
+        // $types_mesurements = [
+        //     'g',
+        //     'kg',
+        //     'ml',
+        //     'cl',
+        //     'l',
+        //     'cuillère à soupe',
+        //     'cuillère à café',
+        //     'verre',
+        //     'bol',
+        //     'pincée',
+        //     'unité'
+        // ];  
+        // return $this->render('ingredient/ingredient-add.html.twig', [
+        //     'types_mesurements' => $types_mesurements
+        // ]);
+
+       
+    }
+
 
    
 }
