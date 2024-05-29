@@ -38,6 +38,31 @@
     transition: all 0.3s;
 }
 
+/* add button */
+.list-ingredients-buttons-container{
+    width: 100vw;
+    height: 50px;
+    display: flex;
+    justify-content: end;
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+.add-ingredient-button{
+    background-color: #FFD700;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'uber_movemedium';
+    font-size: medium;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.add-ingredient-button:hover{
+    background-color: #ffc400;
+    transition: all 0.3s;
+}
+
+
 
 /* hover */
 

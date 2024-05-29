@@ -1,7 +1,14 @@
 {% block ingredient_list %}
 
+<div class="list-ingredients-buttons-container">
+    <a href="{{ path('ingredient_add') }}">
+        <button class="add-ingredient-button">Add ingredient</button>
+    </a>
+</div>
 
 <div class="list-ingredients-grid">
+
+    
 
     {# NO INGREDIENTS TO SHOW #}
     {% if ingredients is empty %}

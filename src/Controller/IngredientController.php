@@ -62,35 +62,42 @@ class IngredientController extends AbstractController
         if ($request->isMethod('POST')) {
 
             $formData = $request->request->all();
-            $name_ingredient = $formData['name-ingredient'];
-            if (!empty($name_ingredient)) {
-                $ingredient = new Ingredient();
-
-                // nom
-                $ingredient->setName($name_ingredient);
-
-                // nom pluriel
-                $checked_nom_pluriel = $formData['choice'] === 'oui' ? true : false;
-                if ($checked_nom_pluriel) {
-                    $ingredient->setNameMany($formData['name-pluriel']);
-                }
+            $imageFile = $request->files->get('image-1') ? $request->files->get('image-1') : null;
+            // dump($formData, $imageFile);
 
 
-                //image
-                $imageFile = $request->files->get('image');
-                //si une image, la mettre dans public/images/ingredients
-                if ($imageFile) {
-                    $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $name_ingredient, $kernel);
-                    $ingredient->setImage($newFilename);
+            $ingredient_part = 1;
+            while(isset($formData['name-ingredient-' . $ingredient_part])){
+               $name_ingredient = $formData['name-ingredient-'.$ingredient_part];
+                if (!empty($name_ingredient)) {
+                    $ingredient = new Ingredient();
+
+                    // nom
+                    $ingredient->setName($name_ingredient);
+
+                    // nom pluriel
+                    $checked_nom_pluriel = $formData['choice-'.$ingredient_part] === 'oui' ? true : false;
+                    if ($checked_nom_pluriel) {
+                        $ingredient->setNameMany($formData['name-pluriel-'.$ingredient_part]);
+                    }
+
+
+                    //image
+                    $imageFile = $request->files->get('image-'.$ingredient_part);
+                    //si une image, la mettre dans public/images/ingredients
+                    if ($imageFile) {
+                        $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $name_ingredient, $kernel);
+                        $ingredient->setImage($newFilename);
+                    }
                 }
 
                 $entityManagerInterface->persist($ingredient);
                 $entityManagerInterface->flush();
 
-                return $this->redirectToRoute('ingredients_list');
-
+                $ingredient_part+=1;
             }
-            dump($formData);
+
+            return $this->redirectToRoute('ingredients_list');
         }
 
         return $this->render('ingredient/ingredient-add.html.twig');
