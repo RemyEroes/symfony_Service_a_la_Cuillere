@@ -2,6 +2,7 @@
     display: grid;
     grid-template-columns: repeat(8, 1fr); /* Cinq colonnes de largeur égale */
     gap: 10px; /* Espacement entre les éléments */
+    row-gap: 20px;
 }
 
 
@@ -69,4 +70,35 @@
 .list-card-ingredient-container:hover .list-card-ingredient-name {
     font-family: 'uber_movebold';
     text-decoration: underline;
+}
+
+
+/* breackpoints */
+@media screen and (max-width: 500px) and (min-width: 0px) {
+    .list-ingredients-grid{
+        grid-template-columns: repeat(3, 1fr);
+        /* background-color: red; */
+    }
+
+    .list-card-ingredient-image {
+
+        width: 70px;
+        height: 70px;
+    
+    }
+
+}
+
+@media screen and (max-width: 768px) and (min-width: 501px) {
+    .list-ingredients-grid{
+        grid-template-columns: repeat(4, 1fr);
+        /* background-color: rgb(128, 255, 0); */
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .list-ingredients-grid{
+        grid-template-columns: repeat(5, 1fr);
+        /* background-color: rgb(0, 255, 255); */
+    }
 }
