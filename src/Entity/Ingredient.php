@@ -30,9 +30,16 @@ class Ingredient
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    /**
+     * @var Collection<int, UserCreateIngredient>
+     */
+    #[ORM\OneToMany(targetEntity: UserCreateIngredient::class, mappedBy: 'ingredient')]
+    private Collection $userCreateIngredients;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
+        $this->userCreateIngredients = new ArrayCollection();
     }
 
 
@@ -111,6 +118,36 @@ class Ingredient
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserCreateIngredient>
+     */
+    public function getUserCreateIngredients(): Collection
+    {
+        return $this->userCreateIngredients;
+    }
+
+    public function addUserCreateIngredient(UserCreateIngredient $userCreateIngredient): static
+    {
+        if (!$this->userCreateIngredients->contains($userCreateIngredient)) {
+            $this->userCreateIngredients->add($userCreateIngredient);
+            $userCreateIngredient->setIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserCreateIngredient(UserCreateIngredient $userCreateIngredient): static
+    {
+        if ($this->userCreateIngredients->removeElement($userCreateIngredient)) {
+            // set the owning side to null (unless already changed)
+            if ($userCreateIngredient->getIngredient() === $this) {
+                $userCreateIngredient->setIngredient(null);
+            }
+        }
 
         return $this;
     }

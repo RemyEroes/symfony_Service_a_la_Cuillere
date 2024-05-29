@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Ingredient;
+use App\Entity\UserCreateIngredient;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 
@@ -89,8 +90,17 @@ class IngredientController extends AbstractController
                         $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $name_ingredient, $kernel);
                         $ingredient->setImage($newFilename);
                     }
+
+
+
+                    // qui à créé l'ingrédient
+                    $user_create_ing = new UserCreateIngredient();
+
+                    $user_create_ing->setUser($this->getUser());
+                    $user_create_ing->setIngredient($ingredient);
                 }
 
+                $entityManagerInterface->persist($user_create_ing);
                 $entityManagerInterface->persist($ingredient);
                 $entityManagerInterface->flush();
 
