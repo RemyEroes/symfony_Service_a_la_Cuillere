@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte{% endblock %}
+
+{% block body %}
+
+{% include '/header/header-logged.html.twig' %}
+
+
+<div class="compte-container">
+    <div class="compte-title">
+        <h1>Mon compte</h1>
+    </div> 
+
+    <div class="compte-container-favoris">
+        <h2>Mes Recettes favorites</h2>
+        <div class="compte-favoris-recettes">
+            {#<a href="{{ path('recipe_new') }}">Mes recettes</a>#}
+        </div>
+    </div> 
+
+    <div class="compte-container-creations">
+        <h2>Mes Créations</h2>
+        <div class="compte-creations-recettes">
+            mes recettes
+            {#<a href="{{ path('recipe_new') }}">Mes recettes</a>#}
+        </div>
+        <div class="compte-creations-ingredients">
+            mes ingrédients
+            {#<a href="{{ path('recipe_new') }}">Mes ingredients</a>#}
+        </div>
+    </div> 
+
+
+    <div class="compte-deco">
+       <a href="{{ path('app_logout') }}">Déconnexion</a>
+    </div>
+</div>
+
+{% endblock %}
