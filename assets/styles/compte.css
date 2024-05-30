@@ -1,0 +1,192 @@
+.compte-container {
+    width: 90%;
+
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.compte-title {
+    font-family: 'uber_movebold';
+    font-size: 2.5em;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+
+.compte-container-favoris,
+.compte-container-creations,
+.compte-deco {
+    background-color: rgb(255, 225, 106);
+
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+
+    border-radius: 10px;
+    padding-bottom: 1px;
+}
+
+h2 {
+    font-family: 'uber_movebold';
+    font-size: 1.5em;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    padding: 0 10px 0 10px;
+}
+
+.compte-favoris-recettes,
+.compte-user-recettes {
+    padding-top: 20px;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+
+    max-width: 100%;
+    overflow-y: scroll;
+
+}
+
+.compte-recettes-container {
+    width: 170px;
+    height: 200px;
+    margin-left: 10px;
+    flex-shrink: 0;
+    /* Empêche les éléments de se rétrécir */
+    position: relative;
+
+}
+
+.compte-recettes-heart-container {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    top: -7px;
+    right: -7px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+
+    z-index: 10;
+}
+
+.compte-recettes-image-container {
+
+    width: 100%;
+    height: 160px;
+
+    margin-bottom: 10px;
+
+    border-radius: 20px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    overflow: hidden;
+
+}
+
+/* image  */
+.compte-recettes-image-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.compte-recettes-name-container h3 {
+    text-align: center;
+    font-family: 'uber_movemedium';
+    font-size: 1em;
+}
+
+/* hover */
+.compte-recettes-container:hover .compte-recettes-image-container img {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+
+.compte-recettes-container:hover .compte-recettes-name-container h3 {
+    text-decoration: underline;
+}
+
+
+/* MES CREATIONS */
+.compte-creations-recettes h2,
+.compte-creations-ingredients h2 {
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+.compte-user-recettes {
+    margin-left: 20px;
+}
+
+/* ingredients */
+.compte-user-ingredients {
+    margin-left: 20px;
+    margin-bottom: 30px;
+    margin-top: 10px;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: start;
+
+    max-width: 100%;
+    overflow-y: scroll;
+
+}
+
+.compte-ingredient-container {
+    width: 90px;
+    margin-left: 10px;
+    flex-shrink: 0;
+    /* Empêche les éléments de se rétrécir */
+    position: relative;
+}
+
+.compte-ingredient-image-container {
+    width: 100%;
+    height: 90px;
+
+    margin-bottom: 10px;
+
+    border-radius: 50%;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border: 3px solid rgb(237, 237, 237);
+    overflow: hidden;
+}
+
+.compte-ingredient-image-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    
+    object-fit: cover;
+}
+
+.compte-ingredient-name-container h3 {
+    text-align: center;
+    font-family: 'uber_movemedium';
+    font-size: 1em;
+}
+
+/* hover */
+.compte-ingredient-container:hover .compte-ingredient-image-container img {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+}
+.compte-ingredient-container:hover .compte-ingredient-name-container h3 {
+    text-decoration: underline;
+}

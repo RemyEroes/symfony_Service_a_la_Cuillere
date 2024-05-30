@@ -15,18 +15,64 @@
     <div class="compte-container-favoris">
         <h2>Mes Recettes favorites</h2>
         <div class="compte-favoris-recettes">
-            {#<a href="{{ path('recipe_new') }}">Mes recettes</a>#}
+            {% for favorite_recipe in favorite_recipes%}
+            <div class="compte-recettes-container">
+                <a href="{{ path('recipe_show', {'slug': favorite_recipe.recipe.slug, 'id': favorite_recipe.recipe.id}) }}">
+                    <div class="compte-recettes-heart-container">
+                        <p>♥️</p>
+                    </div>
+                    <div class="compte-recettes-image-container">
+                        <img class="recipe-image" src="{{ asset('images/recipes/' ~ favorite_recipe.recipe.image) }}" alt="{{ favorite_recipe.recipe.name }}">
+                    </div>
+                    <div class="compte-recettes-name-container">
+                        <h3>{{ favorite_recipe.recipe.name|capitalize }}</h3>
+                    </div>
+                </a>
+            </div>
+             {% endfor %}
         </div>
     </div> 
 
     <div class="compte-container-creations">
         <h2>Mes Créations</h2>
         <div class="compte-creations-recettes">
-            mes recettes
-            {#<a href="{{ path('recipe_new') }}">Mes recettes</a>#}
+            <h2>Mes recettes</h2>
+            <div class="compte-user-recettes">
+                {% for user_recipe in user_recipes%}
+                <div class="compte-recettes-container">
+                    <a href="{{ path('recipe_show', {'slug': user_recipe.recipe.slug, 'id': user_recipe.recipe.id}) }}">
+                        <div class="compte-recettes-image-container">
+                            <img class="recipe-image" src="{{ asset('images/recipes/' ~ user_recipe.recipe.image) }}" alt="{{ user_recipe.recipe.name }}">
+                        </div>
+                        <div class="compte-recettes-name-container">
+                            <h3>{{ user_recipe.recipe.name|capitalize }}</h3>
+                        </div>
+                    </a>
+                </div>
+                 {% endfor %}
+            </div>
         </div>
         <div class="compte-creations-ingredients">
-            mes ingrédients
+            <h2>Mes ingrédients</h2>
+            {% if user_ingredients is empty %}
+                Vous n'avez pas encore ajouté d'ingrédients
+            {% else %}
+
+            <div class="compte-user-ingredients">
+            {% for user_ingredient in user_ingredients %}
+                <div class="compte-ingredient-container">
+                    <a href="{{ path('ingredient_show', {'id': user_ingredient.ingredient.id}) }}">
+                        <div class="compte-ingredient-image-container">
+                            <img  class="ingredient-image" src="{{ asset('images/ingredients/' ~ user_ingredient.ingredient.image) }}"  alt="{{ user_ingredient.ingredient.name }}"  onerror="this.onerror=null; this.src='{{ asset('images/ingredients/on-error-ingredient.jpeg') }}';">
+                        </div>
+                        <div class="compte-ingredient-name-container">
+                            <h3>{{ user_ingredient.ingredient.name|capitalize }}</h3>
+                        </div>
+                    </a>
+                </div>
+                 {% endfor %}
+                </div>
+            {% endif %}
             {#<a href="{{ path('recipe_new') }}">Mes ingredients</a>#}
         </div>
     </div> 
@@ -35,6 +81,9 @@
     <div class="compte-deco">
        <a href="{{ path('app_logout') }}">Déconnexion</a>
     </div>
+
+    
+
 </div>
 
 {% endblock %}
