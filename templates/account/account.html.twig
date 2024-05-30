@@ -14,22 +14,33 @@
 
     <div class="compte-container-favoris">
         <h2>Mes Recettes favorites</h2>
+        <div class="compte-favoris-button-container">
+            <button class="compte-edit-favoris-button">✏️  Editer mes favoris</button>
+        </div>
         <div class="compte-favoris-recettes">
-            {% for favorite_recipe in favorite_recipes%}
-            <div class="compte-recettes-container">
-                <a href="{{ path('recipe_show', {'slug': favorite_recipe.recipe.slug, 'id': favorite_recipe.recipe.id}) }}">
-                    <div class="compte-recettes-heart-container">
-                        <p>♥️</p>
-                    </div>
-                    <div class="compte-recettes-image-container">
-                        <img class="recipe-image" src="{{ asset('images/recipes/' ~ favorite_recipe.recipe.image) }}" alt="{{ favorite_recipe.recipe.name }}">
-                    </div>
-                    <div class="compte-recettes-name-container">
-                        <h3>{{ favorite_recipe.recipe.name|capitalize }}</h3>
-                    </div>
-                </a>
-            </div>
-             {% endfor %}
+            {% if favorite_recipes is empty %}
+                <div class="error-no-content">
+                    <p>Vous n'avez pas encore ajouté de recettes favorites</p>
+                </div>
+            
+            {% else %}
+
+                {% for favorite_recipe in favorite_recipes%}
+                <div class="compte-recettes-container recette-favoris" data-recipe-id="{{ favorite_recipe.recipe.id }}">
+                    <a href="{{ path('recipe_show', {'slug': favorite_recipe.recipe.slug, 'id': favorite_recipe.recipe.id}) }}">
+                        <div class="compte-recettes-heart-container">
+                            <p>♥️</p>
+                        </div>
+                        <div class="compte-recettes-image-container">
+                            <img class="recipe-image" src="{{ asset('images/recipes/' ~ favorite_recipe.recipe.image) }}" alt="{{ favorite_recipe.recipe.name }}">
+                        </div>
+                        <div class="compte-recettes-name-container">
+                            <h3>{{ favorite_recipe.recipe.name|capitalize }}</h3>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div> 
 

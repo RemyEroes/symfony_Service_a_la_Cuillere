@@ -7,6 +7,7 @@
 }
 
 
+
 .compte-title {
     font-family: 'uber_movebold';
     font-size: 2.5em;
@@ -15,6 +16,25 @@
     margin-bottom: 30px;
 }
 
+
+/* ERROR */
+.error-no-content{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.error-no-content p{
+   font-family: 'uber_movebold';
+
+    font-size: 1em;
+    text-align: center;
+    padding: 10px 20px ;
+    border-radius: 10px;
+    border: 2px solid rgb(251, 142, 53);
+    
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 .compte-container-favoris,
 .compte-container-creations,
@@ -36,7 +56,20 @@ h2 {
     margin-bottom: 30px;
     padding: 0 10px 0 10px;
 }
-
+/* edit button */
+.compte-favoris-button-container{
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+.compte-edit-favoris-button{
+    background-color: rgb(251, 142, 53);
+    margin-right: 20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-family: 'uber_movebold';
+    font-size: 1em;
+}
 .compte-favoris-recettes,
 .compte-user-recettes {
     padding-top: 20px;
@@ -190,3 +223,5 @@ h2 {
 .compte-ingredient-container:hover .compte-ingredient-name-container h3 {
     text-decoration: underline;
 }
+
+

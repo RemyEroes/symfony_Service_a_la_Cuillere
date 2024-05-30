@@ -11,3 +11,5 @@ import './styles/app.css';
 
 // import js
 import './JS/ajouter-ingredient.js';
+
+import './JS/compte-supprimer-favoris.js';
