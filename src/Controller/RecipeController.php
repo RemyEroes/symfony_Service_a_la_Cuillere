@@ -30,6 +30,9 @@ class RecipeController extends AbstractController
 
         $requestFilters = $request->query->all();
 
+        // Récupérer les ingredients
+        $ingredients_all = $entityManagerInterface->getRepository(Ingredient::class)->findAll();
+
         $favorite_recipes = get_favorite_recipes_from_user($this->getUser(), $entityManagerInterface);
 
         // sauvegarde les paramètres s'ils existent
@@ -56,7 +59,8 @@ class RecipeController extends AbstractController
                 return $this->render('recipe/recipe-index.html.twig', [
                     'recipes' => $FINAL_RECIPE_LIST,
                     'filters' => true,
-                    'filters_ing' => false
+                    'filters_ing' => false,
+                    'ingredients_all' => $ingredients_all
                 ]);
             }
 
@@ -76,7 +80,8 @@ class RecipeController extends AbstractController
                     return $this->render('recipe/recipe-index.html.twig', [
                         'recipes' => [],
                         'filters' => true,
-                        'filters_ing' => true
+                        'filters_ing' => true,
+                        'ingredients_all' => $ingredients_all
                     ]);
                 }
 
@@ -96,7 +101,8 @@ class RecipeController extends AbstractController
                 return $this->render('recipe/recipe-index.html.twig', [
                     'recipes' => $FINAL_RECIPE_LIST,
                     'filters' => true,
-                    'filters_ing' => $filters_ing_value
+                    'filters_ing' => $filters_ing_value,
+                    'ingredients_all' => $ingredients_all
                 ]);
             }
 
@@ -128,7 +134,8 @@ class RecipeController extends AbstractController
                     return $this->render('recipe/recipe-index.html.twig', [
                         'recipes' => [],
                         'filters' => true,
-                        'filters_ing' => $filters_ing_value
+                        'filters_ing' => $filters_ing_value,
+                        'ingredients_all' => $ingredients_all
                     ]);
                 }
 
@@ -149,7 +156,8 @@ class RecipeController extends AbstractController
                 return $this->render('recipe/recipe-index.html.twig', [
                     'recipes' => $FINAL_RECIPE_LIST,
                     'filters' => true,
-                    'filters_ing' => $filters_ing_value
+                    'filters_ing' => $filters_ing_value,
+                    'ingredients_all' => $ingredients_all
                 ]);
             }
         }
@@ -165,7 +173,8 @@ class RecipeController extends AbstractController
         return $this->render('recipe/recipe-index.html.twig', [
             'recipes' => $recipes_list,
             'filters' => false,
-            'filters_ing' => false
+            'filters_ing' => false,
+            'ingredients_all' => $ingredients_all
         ]);
     }
 

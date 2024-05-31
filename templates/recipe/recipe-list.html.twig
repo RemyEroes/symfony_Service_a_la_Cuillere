@@ -1,6 +1,39 @@
 {% block recipe_list %}
 
 
+<div class="search-container">
+
+    <div class="search-name">
+        <input type="text" id="search-name" placeholder="Rechercher par nom">
+        <button id="search-name-button">
+            <span>X</span>
+        </button>
+    </div>
+
+
+    <div class="search-ingredient">
+        
+        <div class="search-ingredient-container">
+            <div class="search-bar">
+                <input type="text" id="search-ingredient" placeholder="Rechercher par ingrédient">
+                <button id="search-ingredient-button">
+                    <span>X</span>
+                </button>
+            </div>
+            <div class="search-ingredient-list-selected">
+                   {#  ici ingredients selectionnés  #}
+            </div>
+            <div class="search-ingredient-list-all">
+                    {% for ingredient in ingredients_all %}
+                        <div class="ingredient-item" data-ingredient="{{ingredient.name}}">{{ ingredient.name }}</div>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
 <div class="list-grid">
 
     {# NO RECIPIES TO SHOW #}
