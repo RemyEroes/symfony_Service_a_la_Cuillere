@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\Length;
 
 class RecipeController extends AbstractController
 {
@@ -29,14 +30,42 @@ class RecipeController extends AbstractController
 
         $requestFilters = $request->query->all();
 
+        $favorite_recipes = get_favorite_recipes_from_user($this->getUser(), $entityManagerInterface);
+
         // sauvegarde les paramètres s'ils existent
         if (!empty($requestFilters)) {
             //check presence du filtre "ingredients"
-            $filters = isset($requestFilters['ingredients']) ? $requestFilters['ingredients'] : null;
+            $filters_ingredients = isset($requestFilters['ingredients']) ? $requestFilters['ingredients'] : null;
 
-            if ($filters) {
+            //check presence du filtre "name"
+            $filter_name = isset($requestFilters['name']) ? $requestFilters['name'] : null;
+
+
+            // si filtre nom et pas filtre ingredients  -------------------------------------------------------------------------------
+            if ($filter_name && !$filters_ingredients) {
+                // echo 'filtre nom';
+                // remplacer "--" par " "
+                $filter_name = str_replace('--', ' ', $filter_name);
+
+                $filtered_recipes = $entityManagerInterface->getRepository(Recipe::class)->findByNameContains($filter_name);
+                $filtered_recipes = filter_infos_recipes($filtered_recipes, $entityManagerInterface);
+
+                $FINAL_RECIPE_LIST = sort_recipes_by_fav($filtered_recipes, $favorite_recipes);
+
+                // SI FILTRES afficher les recettes filtrées
+                return $this->render('recipe/recipe-index.html.twig', [
+                    'recipes' => $FINAL_RECIPE_LIST,
+                    'filters' => true,
+                    'filters_ing' => false
+                ]);
+            }
+
+            // SI FILTRE INGREDIENTS et pas nom -------------------------------------------------------------------------------
+            if ($filters_ingredients && !$filter_name) {
+                // echo 'filtre ingredients';
+
                 // decouper les filtres par "--"
-                $filters_array = preg_split('/--/', $filters);
+                $filters_array = preg_split('/--/', $filters_ingredients);
 
 
                 $ingredients_array = get_ingredients_from_filters($filters_array, $entityManagerInterface);
@@ -47,35 +76,96 @@ class RecipeController extends AbstractController
                     return $this->render('recipe/recipe-index.html.twig', [
                         'recipes' => [],
                         'filters' => true,
+                        'filters_ing' => true
                     ]);
                 }
 
                 $filtered_recipes = filter_infos_recipes($filtered_recipes, $entityManagerInterface);
 
-                // dump($filtered_recipes);
-
                 // creation d'un tableau associatyif avec x valeurs en foncyion du nombre de filtres
-                $FINAL_RECIPE_LIST = sort_recipes_by_ingredients_and_fav($filtered_recipes, $filters_array);
+                $FINAL_RECIPE_LIST = sort_recipes_by_ingredients_and_fav($filtered_recipes, $filters_array, $favorite_recipes);
 
-                // dump($FINAL_RECIPE_LIST);
+
+                // si filters_array > 1
+                $filters_ing_value = count($filters_array) > 1 ? true : false;
+                if ($filters_ing_value) {
+                    $FINAL_RECIPE_LIST = count_common_ingredients($filters_array, $FINAL_RECIPE_LIST);
+                }
 
                 // SI FILTRES afficher les recettes filtrées
                 return $this->render('recipe/recipe-index.html.twig', [
                     'recipes' => $FINAL_RECIPE_LIST,
                     'filters' => true,
+                    'filters_ing' => $filters_ing_value
+                ]);
+            }
+
+            // SI FILTRE INGREDIENTS ET NOM  -------------------------------------------------------------------------------
+            if ($filters_ingredients && $filter_name) {
+                // echo 'filtre ingredients et nom';
+
+                // decouper les filtres par "--"
+                $filters_array = preg_split('/--/', $filters_ingredients);
+                $filter_name = str_replace('--', ' ', $filter_name);
+
+
+                $ingredients_array = get_ingredients_from_filters($filters_array, $entityManagerInterface);
+                $filtered_recipes_ing = get_recipes_from_ingredients($ingredients_array, $entityManagerInterface);
+                $filteres_recipes_name = $entityManagerInterface->getRepository(Recipe::class)->findByNameContains($filter_name);
+
+                // garder ceux qui sont dans les deux tableaux
+                foreach ($filtered_recipes_ing as $recipe_ing) {
+                    foreach ($filteres_recipes_name as $recipe_name) {
+                        if ($recipe_ing->getId() == $recipe_name->getId()) {
+                            $combined_array[] = $recipe_ing;
+                        }
+                    }
+                }
+
+
+                // si tableau vide retourner un twig vide
+                if (empty($combined_array) || empty($filtered_recipes_ing) || empty($filteres_recipes_name)) {
+                    return $this->render('recipe/recipe-index.html.twig', [
+                        'recipes' => [],
+                        'filters' => true,
+                        'filters_ing' => $filters_ing_value
+                    ]);
+                }
+
+                $filtered_recipes = filter_infos_recipes($combined_array, $entityManagerInterface);
+
+                // creation d'un tableau associatyif avec x valeurs en foncyion du nombre de filtres
+                $FINAL_RECIPE_LIST = sort_recipes_by_ingredients_and_fav($filtered_recipes, $filters_array, $favorite_recipes);
+
+
+                // si filters_array > 1
+                $filters_ing_value = count($filters_array) > 1 ? true : false;
+                if ($filters_ing_value) {
+                    $FINAL_RECIPE_LIST = count_common_ingredients($filters_array, $FINAL_RECIPE_LIST);
+                }
+
+
+                // SI FILTRES afficher les recettes filtrées
+                return $this->render('recipe/recipe-index.html.twig', [
+                    'recipes' => $FINAL_RECIPE_LIST,
+                    'filters' => true,
+                    'filters_ing' => $filters_ing_value
                 ]);
             }
         }
 
-        // SI PAS DE FILTRES
 
+        // SI PAS DE FILTRES  -------------------------------------------------------------------------------------
         // Récupérer la liste des recettes complette
         $recipes_list = $entityManagerInterface->getRepository(Recipe::class)->findAll();
+        $recipes_list = filter_infos_recipes($recipes_list, $entityManagerInterface);
+        $recipes_list = sort_recipes_by_fav($recipes_list, $favorite_recipes);
 
         // Passer la liste des recettes au template 
         return $this->render('recipe/recipe-index.html.twig', [
             'recipes' => $recipes_list,
             'filters' => false,
+            'filters_ing' => false
         ]);
     }
 

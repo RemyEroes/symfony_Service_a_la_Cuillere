@@ -16,6 +16,20 @@ class RecipeRepository extends ServiceEntityRepository
         parent::__construct($registry, Recipe::class);
     }
 
+
+    /**
+     * @param string $filterName
+     * @return Recipe[]
+     */
+    public function findByNameContains(string $filterName): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.name LIKE :filterName')
+            ->setParameter('filterName', '%' . $filterName . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Recipe[] Returns an array of Recipe objects
     //     */

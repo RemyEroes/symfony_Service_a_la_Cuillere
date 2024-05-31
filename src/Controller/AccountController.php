@@ -22,7 +22,6 @@ class AccountController extends AbstractController
         $user_recipes = get_recipes_from_user($user, $entityManagerInterface);
         $user_ingredients = get_ingredients_from_user($user, $entityManagerInterface);
 
-
         return $this->render('account/account.html.twig', [
             'favorite_recipes' => $favorite_recipes,
             'user_recipes' => $user_recipes,

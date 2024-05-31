@@ -21,6 +21,9 @@ function filter_infos_recipes($filtered_recipes, $entityManagerInterface) {
             'id' => $recipe->getId(),
             'name' => $recipe->getName(),
             'image' => $recipe->getImage(),
+            'recipe_text' => $recipe->getRecipeText(),
+            'prep_time' => $recipe->getDuration(),
+            'people' => $recipe->getPeople(),
             'slug' => $recipe->getSlug(),
             'ingredients' => $recipe_ingredients,
         ];
