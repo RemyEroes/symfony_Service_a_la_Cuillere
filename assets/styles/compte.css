@@ -225,3 +225,22 @@ h2 {
 }
 
 
+
+
+/* bouton deco */
+.compte-deco{
+    display: flex;
+    margin-bottom: 30px;
+padding: 10px;
+}
+.compte-deco a{
+    background-color: rgb(251, 142, 53);
+    margin-left: 20px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-family: 'uber_movebold';
+    font-size: 1em;
+}
+.compte-deco a:hover{
+    text-decoration: underline;
+}

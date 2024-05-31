@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         boutonEditFav.addEventListener('click', function() {
             editMode = !editMode;
-            boutonEditFav.textContent = editMode ? 'Terminer' : 'Editer mes favoris';
+            boutonEditFav.textContent = editMode ? '✅  Terminer' : '✏️  Editer mes favoris';
 
             let favorisDivs = document.querySelectorAll('.recette-favoris');
 
