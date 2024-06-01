@@ -126,3 +126,115 @@
     background-color: tomato;
     border:2px solid rgb(255, 235, 235) ;
 }
+
+
+
+/* commentaires */
+
+.commentaires-container{
+    margin-top: 50px;
+    margin-bottom: 200px;
+
+    padding: 20px;
+}
+
+.commentaires-container h2{
+    font-family: 'uber_movebold';
+    font-size: 1.5em;
+    text-decoration: underline;
+}
+
+
+.commentaires{
+    padding: 10px;
+}
+
+.commentaire-item{
+    width: 70%;
+
+    padding: 20px;
+    background-color: rgb(255, 204, 195);
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.commentaire-header{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    width: 100%;
+
+    font-style: italic;
+}
+
+.commentaire-item h4{
+    font-family: 'uber_movebold';
+    font-size: 1.1em;
+
+    transform: translateY(-10px);
+}
+
+.commentaire-item .commentaire-text{
+    font-family: 'uber_movemedium';
+    font-size: 0.9em;
+
+    transform: translateY(-10px);
+}
+
+
+
+.commentaire-form{
+    width: 80%;
+
+    border-bottom: 2px solid rgb(207, 207, 207);
+}
+
+.commentaire-form h5{
+    font-family: 'uber_movebold';
+    font-size: 1.1em;
+    text-decoration: underline;
+
+    margin-top: 20px;
+}
+
+.commentaire-form input{
+    width: 70%;
+    padding: 5px 10px;
+
+    border-radius: 10px;
+    border: 2px solid tomato;
+
+    margin-left: 20px;
+}
+
+.commentaire-form textarea{
+    width: 80%;
+    padding: 5px 10px;
+
+    border-radius: 10px;
+    border: 2px solid tomato;
+
+    margin-left: 20px;
+    margin-top: 10px;
+
+}
+
+.container-button-send{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.container-button-send button{
+    background-color: rgb(255, 128, 106);
+
+    padding: 10px 20px;
+    border-radius: 10px;
+
+    color: white;
+    font-family: 'uber_movebold';
+    margin-bottom: 20px;
+
+
+}

@@ -8,6 +8,7 @@ use App\Entity\UserFavorite;
 use App\Entity\Ingredient;
 use App\Entity\Measurement;
 use App\Entity\Quantity;
+use App\Entity\Commentaire;
 use App\Entity\UserCreateRecipe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -218,12 +219,18 @@ class RecipeController extends AbstractController
             $is_creator = false;
         }
 
+
+        // prendre les commentaires
+        $comments = $entityManagerInterface->getRepository(Commentaire::class)->findBy(['recipe' => $recipe]);
+
+
         // return new Response('Recette: '. $slug);
         return $this->render('recipe/recipe-show.html.twig', [
             'recipe' => $recipe,
             'ingredients' => $ingredients,
             'is_favorite' => $is_favorite,
-            'is_creator' => $is_creator
+            'is_creator' => $is_creator,
+            'commentaires' => $comments
         ]);
     }
 

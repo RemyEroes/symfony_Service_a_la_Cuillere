@@ -58,12 +58,19 @@ class Recipe
     #[ORM\OneToMany(targetEntity: UserCreateRecipe::class, mappedBy: 'recipe')]
     private Collection $userCreateRecipes;
 
+    /**
+     * @var Collection<int, Commentaire>
+     */
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'recipe')]
+    private Collection $commentaires;
+
     public function __construct()
     {
         $this->quantities = new ArrayCollection();
         $this->favorites = new ArrayCollection();
         $this->userFavorites = new ArrayCollection();
         $this->userCreateRecipes = new ArrayCollection();
+        $this->commentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +271,36 @@ class Recipe
             // set the owning side to null (unless already changed)
             if ($userCreateRecipe->getRecipe() === $this) {
                 $userCreateRecipe->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getRecipe() === $this) {
+                $commentaire->setRecipe(null);
             }
         }
 

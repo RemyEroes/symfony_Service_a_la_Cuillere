@@ -92,4 +92,41 @@
 
 
 
+    <div class="commentaires-container">
+        <h2>Commentaires</h2>
+
+
+        <div class="commentaire-form">
+            <form action="{{ path('app_commentaire_add') }}" method="post">
+                <h5>Laisser un commentaire:</h5>
+                <input type="hidden" name="recipe_id" value="{{recipe.id}}">
+                <input type="text" name="titre" placeholder="Titre du commentaire" required>
+                <textarea name="content" id="content" cols="30" rows="10" placeholder="Votre commentaire" required></textarea>
+                <div class="container-button-send">
+                    <button type="submit">Envoyer</button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="commentaires">
+
+            {% for commentaire in commentaires %}
+                <div class="commentaire-item">
+                    <div class="commentaire-header">
+                        <p>{{commentaire.user.email}}</p>
+                    </div>
+                    <h4>{{commentaire.title}}</h4>
+                    <p class="commentaire-text">{{commentaire.commentaire}}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+
+
+    </div>
+
+
+
 {% endblock body %}
