@@ -1,0 +1,154 @@
+{#------------------- Recipe Index ------------------------#}
+
+{% extends "base.html.twig" %}
+
+{# titre de la page #}
+{% block title "Ajouter une recette" %}
+
+{% block body %}
+
+    {% include '/header/header-logged.html.twig' %}
+
+    <div class="m-5">
+        <h1 class="titre-recette-container">
+           Ajouter une recette
+        </h1>
+
+
+        <form method="post" action="{{ path('add_recipe') }}" enctype="multipart/form-data" class="form-add-recipe">
+
+            <div class="form-top">
+                <div class="image-container">
+
+                    <label class="label-for-image" for="image">
+                        <img src="{{ asset('/images/recipes/no-image-recipe.webp') }}" alt="image" class="image-placeholder" id="image-preview">
+                    </label>
+                    <input type="file" id="image" name="image" class="form-control" accept="image/png, image/jpeg, image/webp" required>
+                </div>
+
+                <div class="infos-recettes">
+                    <div class="infos-recettes-top">
+                        <div class="temps-preparation-container">
+                            <label for="temps-prep">🕑</label>
+                            <input type="text" id="temps-prep" name="temps-prep" placeholder="ex: 15min" required>
+                        </div>
+                        <div class="people-container">
+                            <label for="people">🍽️</label>
+                            <input type="number" id="people" name="people" placeholder="x" required>
+                        </div>
+                    </div>
+               
+
+                    <div class="nom-recette">
+                        <label for="nom-recette">Nom:</label>
+                        <input type="text" id="nom-recette" name="nom-recette" placeholder="Ex: tarte aux pommes" required>
+                    </div>
+
+                    <h3>Ingrédients:</h3>
+                    <div class="ingredients-recette-container">
+                    
+
+                        <div class="ingredients-recette-item">
+                            <div class="ingredient-supprimer-button">🗑️</div>
+                            {#<div class="ingredient-name">
+                                <select>
+                                    {% for ingredient in ingredients_all %}
+                                        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+                                    {% endfor %}
+                                </select>   
+                            </div>
+                            <div class="ingredient-quantity">
+                                <input type="number" placeholder="x" min="0" value="0">
+                            </div>
+                            <div class="ingredient-mesurement">
+                                <select>
+                                        {% for measurement in measurements_all %}
+                                            <option value="{{ measurement.name }}">{{ measurement.name }}</option>
+                                        {% endfor %}
+                                </select>  
+                            </div>#}
+                            
+                            {#
+                                <div class="ingredient-name">
+                                <select name="ingredients[][name]">
+                                    {% for ingredient in ingredients_all %}
+                                        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+                                    {% endfor %}
+                                </select>   
+                            </div>
+                            <div class="ingredient-quantity">
+                                <input type="number" name="ingredients[][quantity]" placeholder="x" min="0" value="0">
+                            </div>
+                            <div class="ingredient-mesurement">
+                                <select name="ingredients[][measurement]">
+                                    {% for measurement in measurements_all %}
+                                        <option value="{{ measurement.name }}">{{ measurement.name }}</option>
+                                    {% endfor %}
+                                </select>  
+                            </div> #}
+
+
+
+                            <div class="ingredient-name">
+                                <select name="ingredients[0][name]">
+                                    {% for ingredient in ingredients_all %}
+                                        <option value="{{ ingredient.name }}">{{ ingredient.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="ingredient-quantity">
+                                <input type="number" name="ingredients[0][quantity]" placeholder="x" min="0" value="0">
+                            </div>
+                            <div class="ingredient-mesurement">
+                                <select name="ingredients[0][measurement]">
+                                    {% for measurement in measurements_all %}
+                                        <option value="{{ measurement.name }}">{{ measurement.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+
+
+                        </div>
+                        
+
+                        <div class="ingredients-recette-add-button">
+                            + Ajouter
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-bottom">
+                <h3>Recette:</h3>
+                <textarea name="recette" id="recette" cols="30" rows="10" placeholder="Décrivez votre recette ici..." required></textarea>
+            </div>
+
+            <button type="submit" class="boutton-ajouter-recette">Créer la recette</button>
+                
+            
+        </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+{% endblock body %}

@@ -4,6 +4,7 @@
 @import './ajouter-ingredient.css';
 @import './compte.css';
 @import './recherche-par-ingredients.css';
+@import './ajouter-recette.css';
 
 .font-uber-bold {
     font-family: 'uber_movebold';

@@ -6,12 +6,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Recipe;
 use App\Entity\UserFavorite;
 use App\Entity\Ingredient;
+use App\Entity\Measurement;
 use App\Entity\Quantity;
+use App\Entity\UserCreateRecipe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\HttpKernel\KernelInterface;
+
 
 class RecipeController extends AbstractController
 {
@@ -219,4 +223,92 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('app_account');
         }
     }
+
+
+    // ajouter une recette
+    #[Route('/recette/ajouter', name: 'add_recipe')]
+    public function add_recipe(Request $request, EntityManagerInterface $entityManagerInterface, KernelInterface $kernel): Response
+    {
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // Récupérer tous les ingredients et les mesurements
+        $ingredients = $entityManagerInterface->getRepository(Ingredient::class)->findAll();
+        // par orde alphabétique
+        usort($ingredients, function ($a, $b) {
+            return $a->getName() <=> $b->getName();
+        });
+        $measurements = $entityManagerInterface->getRepository(Measurement::class)->findAll();
+
+
+        // si le formulaire est soumis
+        if ($request->isMethod('POST')) {
+
+            $formData = $request->request->all();   
+            
+            $recipe = new Recipe();
+            $recipe->setName($formData['nom-recette']);
+
+            // name to slug: espaces -> "--" et caractères spéciaux en "-"
+            $slug = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '-', $formData['nom-recette']));
+
+            $recipe->setDuration($formData['temps-prep']);
+            $recipe->setPeople($formData['people']);
+
+            //get image
+            $image = $request->files->get('image');
+            if ($image) {
+                $newFilename = move_file_and_get_filemame($image, 'recipes', $slug, $kernel);
+                $recipe->setImage($newFilename);
+            }
+
+            $recipe->setSlug($slug);
+            $recipe->setRecipeText($formData['recette']);
+
+            // enregistrer la recette
+            $entityManagerInterface->persist($recipe);
+            $entityManagerInterface->flush();
+
+
+            // enregistrer les ingredients avec les quantités
+            foreach ($formData['ingredients'] as $ingredient) {
+               
+                // touver par nom
+                $this_ingredient = $entityManagerInterface->getRepository(Ingredient::class)->findOneBy(['name' => $ingredient['name']]);
+                $this_measurement = $entityManagerInterface->getRepository(Measurement::class)->findOneBy(['name' => $ingredient['measurement']]);
+
+                $quantity = new Quantity();
+                $quantity->setIngredient($this_ingredient);
+                $quantity->setMeasurement($this_measurement);
+                $quantity->setQuantity($ingredient['quantity']);
+                $quantity->setRecipe($recipe);
+
+                $entityManagerInterface->persist($quantity);
+                $entityManagerInterface->flush();
+            }
+
+            // enregistrer qui a créé la recette
+            $user_create_recipe = new UserCreateRecipe();
+            $user_create_recipe->setUser($this->getUser());
+            $user_create_recipe->setRecipe($recipe);
+
+            $entityManagerInterface->persist($user_create_recipe);
+            $entityManagerInterface->flush();
+
+            return $this->redirectToRoute('recipe_list');
+
+
+
+        }
+
+
+
+        return $this->render('recipe/recipe-add.html.twig',[
+            'ingredients_all' => $ingredients,
+            'measurements_all' => $measurements
+        ]);
+
+
+    }
+
 }

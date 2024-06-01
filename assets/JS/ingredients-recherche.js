@@ -30,29 +30,62 @@ if (window.location.pathname === '/recettes') {
             localStorage.setItem('ingredients', JSON.stringify(ingredients_array));
         }
 
+
         function add_ingredient_listeners() {
             const items_ingredients_all = document.querySelector('.search-ingredient-list-all');
             const items_ingredients_selected = document.querySelector('.search-ingredient-list-selected');
-
+        
+            // Écouteur pour la liste complète d'ingrédients
             items_ingredients_all.addEventListener('click', function (event) {
                 const target = event.target.closest('.ingredient-item');
                 if (!target) return;
-
-                target.classList.toggle('selected');
+        
+                // Vérifie si l'élément est déjà sélectionné pour éviter les duplications
+                if (target.classList.contains('selected')) return;
+        
+                target.classList.add('selected');
                 const item_selected = target.cloneNode(true);
                 items_ingredients_selected.appendChild(item_selected);
+        
+                // Ajoute un écouteur d'événement à l'élément cloné pour permettre sa suppression
+                item_selected.addEventListener('click', function () {
+                    target.classList.remove('selected');
+                    item_selected.remove();
+                    set_ingredients_in_local_cache();
+                });
+        
                 set_ingredients_in_local_cache();
             });
-
+        
+            // Écouteur pour la liste des ingrédients sélectionnés
             items_ingredients_selected.addEventListener('click', function (event) {
                 const target = event.target.closest('.ingredient-item');
                 if (!target) return;
-
+        
                 target.remove();
                 const ingredient = target.dataset.ingredient;
                 const item_to_remove = items_ingredients_all.querySelector(`.ingredient-item[data-ingredient="${ingredient}"]`);
-                item_to_remove.classList.remove('selected');
+                if (item_to_remove) {
+                    item_to_remove.classList.remove('selected');
+                }
                 set_ingredients_in_local_cache();
+            });
+
+            remove_selected_ingredient_listener()
+        }
+        
+        // Fonction pour enregistrer les ingrédients sélectionnés dans le cache local
+        function set_ingredients_in_local_cache() {
+            const items_ingredients = document.querySelectorAll('.search-ingredient-list-selected .ingredient-item');
+            const ingredients_array = Array.from(items_ingredients).map(item => item.dataset.ingredient);
+            localStorage.setItem('ingredients', JSON.stringify(ingredients_array));
+        }
+        
+        // Suppression des écouteurs d'événements obsolètes
+        function remove_selected_ingredient_listener() {
+            const items_ingredients_selected = document.querySelectorAll('.search-ingredient-list-all .ingredient-item.selected');
+            items_ingredients_selected.forEach(item => {
+                item.removeEventListener('click', () => {});
             });
         }
 

@@ -16,6 +16,8 @@
             {% else %}
                 Toutes nos recettes
             {% endif %}
+
+            <a href="{{ path('add_recipe') }}" class="bouton-add-recette">+ Ajouter une recette</a>
         </h1>
 
         {% include '/recipe/recipe-list.html.twig' with {'recipes': recipes, 'filters': filters} %}

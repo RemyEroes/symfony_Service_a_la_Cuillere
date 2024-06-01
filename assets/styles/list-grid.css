@@ -19,6 +19,28 @@
 }
 
 
+/* bouton ajouter */
+.titre-recette-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+}
+.bouton-add-recette{
+    padding: 10px 15px;
+    background-color: orange;
+    color: white;
+
+    font-size: 17px;
+    font-family: 'uber_movemedium';
+
+    border-radius: 10px;
+}
+.bouton-add-recette:hover{
+    text-decoration: underline;
+}
+
 .list-card-recipe-container{
     width: 250px;
     height: 350px;
