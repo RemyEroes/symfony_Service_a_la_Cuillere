@@ -27,21 +27,13 @@ if (window.location.pathname === '/recette/ajouter') {
         function add_remove_listeners() {
             const buttons_remove_ingredient = document.querySelectorAll('.ingredient-supprimer-button');
         
-            // Suppression des listeners
             buttons_remove_ingredient.forEach(function (button) {
-                button.removeEventListener('click', handleRemoveButtonClick);
+                button.addEventListener('click', function () {
+                    const ingredientItem = button.parentElement;
+                    ingredientItem.remove();
+                    update_ingredient_names();
+                });
             });
-        
-            // Ajout des listeners
-            buttons_remove_ingredient.forEach(function (button) {
-                button.addEventListener('click', handleRemoveButtonClick);
-            });
-        
-            // Fonction de rappel pour gérer le clic sur le bouton de suppression
-            function handleRemoveButtonClick() {
-                button.parentElement.remove();
-                update_ingredient_names();
-            }
         }
 
         function update_ingredient_names() {
