@@ -1,50 +1,6 @@
 if (window.location.pathname === '/recettes') {
     document.addEventListener('DOMContentLoaded', function () {
 
-//         let ingredient_search_opened = false;
-
-//         // let search_ingredient_container = document.querySelector('.search-ingredient-container');
-//         // let search_ingredient_all = document.querySelector('.search-ingredient-list-all');
-//         // let close_button = document.querySelector('.close-ingredient-research');
-
-//         // search_ingredient_container.addEventListener('click', function () {
-//         //     if (ingredient_search_opened) {
-//         //         search_ingredient_all.style.display = 'none';
-//         //         ingredient_search_opened = false;
-//         //         close_button.style.display = 'none';
-//         //     } else {
-//         //         search_ingredient_all.style.display = 'flex';
-//         //         ingredient_search_opened = true;
-//         //         close_button.style.display = 'block';
-                
-//         //         close_button.addEventListener('click', function () {
-//         //             search_ingredient_all.style.display = 'none';
-//         //             ingredient_search_opened = false;
-//         //             close_button.style.display = 'none';
-//         //         });
-//         //     }
-//         // });
-//         let search_ingredient_container = document.querySelector('.search-ingredient-container');
-// let search_ingredient_all = document.querySelector('.search-ingredient-list-all');
-// let close_button = document.querySelector('.close-ingredient-research');
-
-// search_ingredient_container.addEventListener('click', function () {
-//     if (ingredient_search_opened) {
-//         search_ingredient_all.style.display = 'none';
-//         close_button.style.display = 'none';
-//     } else {
-//         search_ingredient_all.style.display = 'flex';
-//         close_button.style.display = 'block';
-//     }
-//     ingredient_search_opened = !ingredient_search_opened; // Inverse l'état
-// });
-
-// close_button.addEventListener('click', function () {
-//     search_ingredient_all.style.display = 'none';
-//     close_button.style.display = 'none';
-//     ingredient_search_opened = false; // Assure que l'état est fermé
-// });
-
 
         function get_ingredients_params() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -110,12 +66,29 @@ if (window.location.pathname === '/recettes') {
         }
 
         function add_button_reset_listeners() {
+            // ingredients
             const button_reset_ingredients = document.querySelector('#search-ingredient-button');
 
             button_reset_ingredients.addEventListener('click', function () {
                 remove_ingredient_from_local_cache();
                 remove_selected_ingredients()
 
+                // supprimer search bar ingredients value et afficher tous les ingredients
+                document.querySelector('#search-ingredient').value = '';
+                const items_ingredients = document.querySelectorAll('.search-ingredient-list-all .ingredient-item');
+                items_ingredients.forEach((item) => {
+                    item.style.display = 'block';
+                });
+                return;
+
+            });
+
+
+            // name
+            const button_reset_name = document.querySelector('#search-name-button');
+            button_reset_name.addEventListener('click', function () {
+                localStorage.removeItem('name');
+                document.querySelector('#search-name').value = '';
             });
         }
 
@@ -132,16 +105,82 @@ if (window.location.pathname === '/recettes') {
             });
         }
 
+        function get_name_params() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('name')) {
+                localStorage.setItem('name', urlParams.get('name'));
+            }
+            return urlParams.get('name');
+        }
+
+        function get_name_from_local_cache() {
+            return localStorage.getItem('name');
+        }
+
         let ingredients_array = get_ingredients_params();
 
         if (ingredients_array.length === 0) {
             ingredients_array = get_ingredients_from_local_cache();
         }
 
+        let name_search_value = get_name_params();
+        if (!name_search_value) {
+            name_search_value = get_name_from_local_cache()
+        }
+
+        if (name_search_value) {
+            document.querySelector('#search-name').value = name_search_value;
+        }
+       
+
         select_ingredient_OFD(ingredients_array);
         set_ingredients_in_local_cache();
         add_ingredient_listeners();
         add_button_reset_listeners()
+
+
+        // search bar ingredients
+        const search_bar_ingredients = document.querySelector('#search-ingredient');
+        search_bar_ingredients.addEventListener('keyup', function () {
+            const search_value = search_bar_ingredients.value.toLowerCase();
+
+            const items_ingredients = document.querySelectorAll('.search-ingredient-list-all .ingredient-item');
+
+            items_ingredients.forEach((item) => {
+                const ingredient = item.dataset.ingredient.toLowerCase();
+                if (ingredient.includes(search_value)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+
+        // bouton recherche
+        const search_button = document.querySelector('#bouton-search');
+        search_button.addEventListener('click', function () {
+            let final_url = '/recettes';
+            let url_ingr = '';
+            let url_name = '';
+
+            // ingredients
+            let ingredients_array_local = get_ingredients_from_local_cache()
+            ingredients_array_local = ingredients_array_local.map(ingredient => ingredient.toLowerCase());
+
+            if (Array.isArray(ingredients_array_local) && ingredients_array_local.length > 0) {
+                url_ingr = '?ingredients=' + ingredients_array_local.join('--');
+            }
+
+            //name
+            let name = document.querySelector('#search-name').value.toLowerCase();
+            if (name) {
+                url_name = url_ingr ? '&name=' + name : '?name=' + name;
+            }
+
+            final_url += url_ingr + url_name;
+            window.location.href = final_url;
+        });
 
     });
 }

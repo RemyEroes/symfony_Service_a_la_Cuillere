@@ -137,3 +137,37 @@
    display: none;
    background-color: blue;
 }
+
+
+
+/* bouton rechercher */
+.bouton-search-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+
+    margin-top: 10px;
+}
+
+#bouton-search{
+    width: 200px;
+    height: 50px;
+
+    background-color: tomato;
+    color: white;
+    border: 2px solid white;
+    border-radius: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: 'uber_movebold';
+    font-size: 20px;
+
+    cursor: pointer;
+}
+#bouton-search:hover{
+    background-color: rgb(254, 70, 37);
+}

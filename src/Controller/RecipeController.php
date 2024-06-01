@@ -128,6 +128,9 @@ class RecipeController extends AbstractController
                     }
                 }
 
+                // si filters_array > 1
+                $filters_ing_value = count($filters_array) > 1 ? true : false;// si filters_array > 1
+
 
                 // si tableau vide retourner un twig vide
                 if (empty($combined_array) || empty($filtered_recipes_ing) || empty($filteres_recipes_name)) {
