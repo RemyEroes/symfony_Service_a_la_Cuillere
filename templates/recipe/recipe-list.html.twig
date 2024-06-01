@@ -1,43 +1,47 @@
 {% block recipe_list %}
 
+{% if ingredients_all is defined %}
 
-<div class="search-container">
+    <div class="search-container">
 
-    <div class="search-name">
-        <input type="text" id="search-name" placeholder="Rechercher par nom">
-        <button id="search-name-button">
-            <span>X</span>
-        </button>
-    </div>
+        <div class="search-name">
+            <input type="text" id="search-name" placeholder="Rechercher par nom">
+            <button id="search-name-button">
+                <span>X</span>
+            </button>
+        </div>
 
 
-    <div class="search-ingredient">
-        
-        <div class="search-ingredient-container">
-            <div class="search-bar">
-                <input type="text" id="search-ingredient" placeholder="Rechercher par ingrédient">
-                <button id="search-ingredient-button">
-                    <span>X</span>
-                </button>
-            </div>
-            <div class="search-ingredient-list-selected">
-                   {#  ici ingredients selectionnés  #}
-            </div>
-            <div class="search-ingredient-list-all">
-                    {% for ingredient in ingredients_all %}
-                        <div class="ingredient-item" data-ingredient="{{ingredient.name}}">{{ ingredient.name }}</div>
-                    {% endfor %}
+        <div class="search-ingredient">
+            
+            <div class="search-ingredient-container">
+                <div class="search-bar">
+                    <input type="text" id="search-ingredient" placeholder="Rechercher par ingrédient">
+                    <button id="search-ingredient-button">
+                        <span>X</span>
+                    </button>
+                </div>
+                <div class="search-ingredient-list-selected">
+                    {#  ici ingredients selectionnés  #}
+                </div>
+                <div class="search-ingredient-list-all">
+                        {% for ingredient in ingredients_all %}
+                            <div class="ingredient-item" data-ingredient="{{ingredient.name}}">{{ ingredient.name }}</div>
+                        {% endfor %}
+                </div>
             </div>
         </div>
+        
     </div>
-    
-</div>
 
-<div class="bouton-search-container">
-    <button id="bouton-search">
-        <span>🔍 Rechercher</span>
-    </button>    
-</div>
+    <div class="bouton-search-container">
+        <button id="bouton-search">
+            <span>🔍 Rechercher</span>
+        </button>    
+    </div>
+
+{% endif %}
+
 
 
 <div class="list-grid">
@@ -49,52 +53,70 @@
 
     {% else %}
     
-        {% for recipe_common_ingredients in recipes|reverse %}
-            {% for recipe in recipe_common_ingredients%}
-                <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
-                    <div class="list-card-recipe-container">
-                        {%if recipe.favorite == 1 %}
-                            <div class="list-card-favorite">
-                                <p>♥️</p>
-                            </div>
-                        {% endif %}
-                            <div class="list-card-image">
-                                <img class="recipe-image" src="{{ asset('images/recipes/' ~ recipe.image) }}" alt="{{ recipe.name }}">
-                            </div>
-                        <div class="list-card-bottom-container">
-                            <div class="list-card-name">
-                                <h2>{{ recipe.name|capitalize }}</h2>
-                            </div>
-                            <div class="list-card-text">
-                            <p>{{ recipe.recipe_text }}</p>
-                            </div>
-
-                            <div class="list-card-infos-container">
-                                <p>🕑: {{recipe.prep_time}}</p>
-                                <p>🍽️: {{recipe.people}} personnes</p>
-                            </div>
+    {# si on vient de la liste des ingrédients #}
+    {% if show_from_ingredient is defined and show_from_ingredient == true%}
+            {% for recipe in recipes%}
+            <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
+                <div class="list-card-recipe-container">
+                        <div class="list-card-image">
+                            <img class="recipe-image" src="{{ asset('images/recipes/' ~ recipe.image) }}" alt="{{ recipe.name }}">
                         </div>
-
-                        {% if filters_ing == true %}
-                            <div class="list-card-common-ingr">
-                                {{ recipe.common_ingr_number }} ingrédients communs
-                            </div>
-                        {% endif %}
-
-                        
-                        {#
-                        <div class="list-card-text">
-                            {% for ingredient in recipe.ingredients.length %}
-                                <span class="badge badge-primary">{{ ingredient }}</span>
-                            {% endfor %}
+                    <div class="list-card-bottom-container">
+                        <div class="list-card-name little">
+                            <h2>{{ recipe.name|capitalize }}</h2>
                         </div>
-                        #} 
-
                     </div>
-                </a>
-            {% endfor %}
+                </div>
+            </a>
         {% endfor %}
+    {% else %}
 
+            {% for recipe_common_ingredients in recipes|reverse %}
+                {% for recipe in recipe_common_ingredients%}
+                    <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
+                        <div class="list-card-recipe-container">
+                            {%if recipe.favorite == 1 %}
+                                <div class="list-card-favorite">
+                                    <p>♥️</p>
+                                </div>
+                            {% endif %}
+                                <div class="list-card-image">
+                                    <img class="recipe-image" src="{{ asset('images/recipes/' ~ recipe.image) }}" alt="{{ recipe.name }}">
+                                </div>
+                            <div class="list-card-bottom-container">
+                                <div class="list-card-name">
+                                    <h2>{{ recipe.name|capitalize }}</h2>
+                                </div>
+                                <div class="list-card-text">
+                                <p>{{ recipe.recipe_text }}</p>
+                                </div>
+
+                                <div class="list-card-infos-container">
+                                    <p>🕑: {{recipe.prep_time}}</p>
+                                    <p>🍽️: {{recipe.people}} personnes</p>
+                                </div>
+                            </div>
+
+                            {% if filters_ing == true %}
+                                <div class="list-card-common-ingr">
+                                    {{ recipe.common_ingr_number }} ingrédients communs
+                                </div>
+                            {% endif %}
+
+                            
+                            {#
+                            <div class="list-card-text">
+                                {% for ingredient in recipe.ingredients.length %}
+                                    <span class="badge badge-primary">{{ ingredient }}</span>
+                                {% endfor %}
+                            </div>
+                            #} 
+
+                        </div>
+                    </a>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
     {% endif %}
 
 </div>

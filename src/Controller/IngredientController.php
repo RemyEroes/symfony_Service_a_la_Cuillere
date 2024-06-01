@@ -42,8 +42,8 @@ class IngredientController extends AbstractController
         // récupérer les recettes dans lesquelles il y a cet ingrédient
         $recipes = get_recipes_from_ingredients([$ingredient], $entityManagerInterface);
         // dump($recipes);
-
-
+        
+        
         // Pass the ingredient and its recipes to the template 
         return $this->render('ingredient/ingredient-show.html.twig', [
             'ingredient' => $ingredient,

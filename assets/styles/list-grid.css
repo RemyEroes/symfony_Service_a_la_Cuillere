@@ -107,6 +107,11 @@
     font-size: large;
     border-bottom: 1px solid black;
 }
+/* petit */
+
+.list-card-name.little{
+    border-bottom: none;
+}
 
 .list-card-text{
     height: 77px;

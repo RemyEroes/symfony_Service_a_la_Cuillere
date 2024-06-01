@@ -30,7 +30,8 @@
     text-align: center;
     padding: 10px 20px ;
     border-radius: 10px;
-    border: 2px solid rgb(251, 142, 53);
+    border: 2px solid tomato;
+    background-color: white;
     
     margin-top: 10px;
     margin-bottom: 10px;
@@ -39,7 +40,7 @@
 .compte-container-favoris,
 .compte-container-creations,
 .compte-deco {
-    background-color: rgb(255, 225, 106);
+    background-color: #ffbdb1;
 
     margin-left: 20px;
     margin-right: 20px;
@@ -63,7 +64,8 @@ h2 {
     justify-content: end;
 }
 .compte-edit-favoris-button{
-    background-color: rgb(251, 142, 53);
+    border: 2px solid tomato;
+    background-color: rgba(255, 255, 255, 0.313);
     margin-right: 20px;
     padding: 5px 10px;
     border-radius: 10px;
@@ -234,7 +236,8 @@ h2 {
 padding: 10px;
 }
 .compte-deco a{
-    background-color: rgb(251, 142, 53);
+    border: 2px solid tomato;
+    background-color: rgba(255, 255, 255, 0.313);
     margin-left: 20px;
     padding: 5px 10px;
     border-radius: 10px;
