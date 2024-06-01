@@ -187,13 +187,43 @@ class RecipeController extends AbstractController
 
 
     #[Route('/recette/{slug}-{id}', name: 'recipe_show', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
-    public function show(Request $request, string $slug, int $id): Response
+    public function show(Request $request, EntityManagerInterface $entityManagerInterface, string $slug, int $id): Response
     {
+
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // Récupérer la recette
+        $recipe = $entityManagerInterface->getRepository(Recipe::class)->find($id);
+
+        //recuperer les ingredients
+        $ingredients = $entityManagerInterface->getRepository(Quantity::class)->findBy(['recipe' => $recipe]);
+
+        // voir si la recette est dans les favoris
+        $favorites_recipes = get_favorite_recipes_from_user($this->getUser(), $entityManagerInterface);
+        $is_favorite = false;
+
+        foreach ($favorites_recipes as $favorite_recipe) {
+            if ($favorite_recipe->getRecipe() == $recipe) {
+                $is_favorite = true;
+            }
+        }
+
+        // voir si user a créé la recette
+        $user_create_recipe = $entityManagerInterface->getRepository(UserCreateRecipe::class)->findOneBy(['user' => $this->getUser(), 'recipe' => $recipe]);
+
+        if ($user_create_recipe) {
+            $is_creator = true;
+        }else{
+            $is_creator = false;
+        }
 
         // return new Response('Recette: '. $slug);
         return $this->render('recipe/recipe-show.html.twig', [
-            'slug' => $slug,
-            'id' => $id
+            'recipe' => $recipe,
+            'ingredients' => $ingredients,
+            'is_favorite' => $is_favorite,
+            'is_creator' => $is_creator
         ]);
     }
 
@@ -213,15 +243,59 @@ class RecipeController extends AbstractController
             $recipe_ids_array = preg_split('/--/', $recipe_id);
             $user = $this->getUser();
 
+
             foreach ($recipe_ids_array as $recipe_id) {
                 delete_user_favorite_recipe($user, $recipe_id, $entityManagerInterface);
             }
         }
 
 
+
+
         if ($page_param === 'compte') {
             return $this->redirectToRoute('app_account');
         }
+        if ($page_param === 'recette') {
+            // page precedente
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+        }
+
+    }
+
+
+    // ajouter aux favoris
+    #[Route('/recette/favoris/ajouter', name: 'recipe_add_fav')]
+    public function add_fav(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    {
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $requestparams = $request->query->all();
+
+        $recipe_id = isset($requestparams['ids']) ? $requestparams['ids'] : null;
+
+        if ($recipe_id) {
+            $recipe_ids_array = preg_split('/--/', $recipe_id);
+            $user = $this->getUser();
+
+
+            foreach ($recipe_ids_array as $recipe_id) {
+                $recipe = $entityManagerInterface->getRepository(Recipe::class)->find($recipe_id);
+
+                // ajouter la recette des favoris de l'utilisateur
+                $recipe_favorite = new UserFavorite();
+                $recipe_favorite->setUser($user);
+                $recipe_favorite->setRecipe($recipe);
+                
+                $entityManagerInterface->persist($recipe_favorite);
+                $entityManagerInterface->flush();
+            }
+        }
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
+
     }
 
 
@@ -308,6 +382,37 @@ class RecipeController extends AbstractController
             'measurements_all' => $measurements
         ]);
 
+
+    }
+
+
+    // supprimer une recette
+    #[Route('/recette/supprimer', name: 'delete_recipe')]
+    public function delete_recipe(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    {
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $requestparams = $request->query->all();
+
+        $recipe_id = isset($requestparams['id']) ? $requestparams['id'] : null;
+
+        if ($recipe_id) {
+            $recipe = $entityManagerInterface->getRepository(Recipe::class)->find($recipe_id);
+
+            // supprimer les ingredients
+            $ingredients = $entityManagerInterface->getRepository(Quantity::class)->findBy(['recipe' => $recipe]);
+            foreach ($ingredients as $ingredient) {
+                $entityManagerInterface->remove($ingredient);
+                $entityManagerInterface->flush();
+            }
+
+            // supprimer la recette
+            $entityManagerInterface->remove($recipe);
+            $entityManagerInterface->flush();
+        }
+
+        return $this->redirectToRoute('recipe_list');
 
     }
 

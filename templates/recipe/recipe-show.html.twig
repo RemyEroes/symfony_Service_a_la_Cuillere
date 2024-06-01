@@ -3,11 +3,94 @@
 {% extends "base.html.twig" %}
 
 {# titre de la page #}
-{% block title %}{{slug}}{% endblock title %}
+{% block title %}{{recipe.name}}{% endblock title %}
 
 
 {% block body %}
-<h1 class="place-content-center  w-100 text-3xl font-bold underline">La recette: {{ slug }} et id {{id}}</h1>
+
+{% include '/header/header-logged.html.twig' %}
+
+{% if is_creator == true %}
+    <div class="button-container">
+        {#
+        <a class="button-ingredient " href="{{path('ingredient_edit' , {'id':ingredient.id})}}">✏️  Modifier</a>
+        <a class="button-ingredient supprimer" href='{{ path('delete_recipe', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
+        #}
+        <a class="button-ingredient supprimer" >✏️  Modifier</a>
+        <a class="button-ingredient supprimer" href='{{ path('delete_recipe', {'id': recipe.id}) }}'">🗑️ Supprimer</a>
+    </div>
+{% endif %}
+
+    <div class="m-5 recette-show">
+        <h1 class="titre-recette-container">
+           {{recipe.name}}
+        </h1>
+
+            {% if is_favorite == false%}
+                <a href="{{ path('recipe_add_fav', {'ids': recipe.id}) }}">
+                    <div class="coeur-recette">♥️</div>
+                </a>
+            {% else %}
+            <a href="{{ path('recipe_remove_fav', {'ids': recipe.id, 'page': 'recette' }) }}">
+                    <div class="coeur-recette liked">♥️</div>
+                </a>
+            {% endif %}
+
+            <div class="form-top">
+                <div class="image-container">
+
+                    <label class="label-for-image" for="image">
+                        <img src="{{ asset('/images/recipes/' ~ recipe.image ) }}"  alt="image" class="image-placeholder" id="image-preview" >
+                    </label>
+                </div>
+
+                <div class="infos-recettes show">
+                    <div class="infos-recettes-top">
+                        <div class="temps-preparation-container">
+                            <p>🕑 <span>{{recipe.duration}}</span></p>
+                        </div>
+                        <div class="people-container">
+                            <p>🍽️ <span>{{recipe.people}}</span></p>
+                        </div>
+                    </div>
+               
+
+                    <h3>Ingrédients:</h3>
+                    <div class="ingredients-recette-container show">
+                    
+
+                        {% for ingredient in ingredients %}
+
+                         <a href="{{ path('ingredient_show', {'id': ingredient.ingredient.id}) }}">
+                            <div class="ingredient-show-item">
+                                <img class="ingredient-show-image" src="{{ asset('/images/ingredients/' ~ ingredient.ingredient.image ) }}" alt="image" onerror="this.onerror=null; this.src='{{ asset('/images/ingredients/on-error-ingredient.jpeg') }}'">
+                                <p class="quantity">{{ingredient.quantity}}
+                                    {% if ingredient.measurement.name != "unité" %}
+                                        {{ingredient.measurement.name}}
+                                    {% endif %}
+                                </p>
+                                <p class="name">
+                                    {% if ingredient.quantity >= 2 %}
+                                        {{ingredient.ingredient.namemany}}
+                                    {% else %}
+                                        {{ingredient.ingredient.name}}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-bottom">
+                <h3>Recette:</h3>
+                <p>{{recipe.recipetext}}</p>
+            </div>
+
+
+    </div>
+
 
 
 {% endblock body %}

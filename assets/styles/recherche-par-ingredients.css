@@ -50,7 +50,7 @@
 }
 
 .search-ingredient-container{
-    background-color: rgb(208, 208, 208);
+    background-color: #ffe0db;
     padding: 20px 20px;
     border-radius: 20px;
 }
@@ -76,7 +76,7 @@
     width: 100%;
     min-height: 50px;
 
-    border-bottom: 3px solid rgb(165, 165, 165);
+    border-bottom: 3px solid rgb(255, 146, 146);
 }
 
 .ingredient-item{
