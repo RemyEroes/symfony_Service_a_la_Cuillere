@@ -17,5 +17,3 @@ import './JS/compte-supprimer-favoris.js';
 import './JS/ingredients-recherche.js';
 
 import './JS/ajouter-recette.js';
-
-import './JS/show-ingredient.js';
