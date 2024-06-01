@@ -42,12 +42,23 @@ class IngredientController extends AbstractController
         // récupérer les recettes dans lesquelles il y a cet ingrédient
         $recipes = get_recipes_from_ingredients([$ingredient], $entityManagerInterface);
         // dump($recipes);
+
+        // check if the user has created this ingredient
+        $user_create_ing = $entityManagerInterface->getRepository(UserCreateIngredient::class)->findOneBy(['ingredient' => $ingredient, 'user' => $this->getUser()]);
+
+        if($user_create_ing== null){
+            $user_create_ing = false;
+        }else{
+            $user_create_ing = true;
+        }
+
         
-        
+
         // Pass the ingredient and its recipes to the template 
         return $this->render('ingredient/ingredient-show.html.twig', [
             'ingredient' => $ingredient,
-            'recipes' => $recipes
+            'recipes' => $recipes,
+            'user_create_ing' => $user_create_ing
         ]);
     }
 
@@ -132,6 +143,38 @@ class IngredientController extends AbstractController
         // ]);
 
        
+    }
+
+    #[Route('/ingredient/supprimer', name: 'ingredient_delete')]
+    public function delete(Request $request, EntityManagerInterface $entityManagerInterface): Response
+    {
+        // Only authenticated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $ingredient_id = $request->query->get('id');
+
+        $ingredient = $entityManagerInterface->getRepository(Ingredient::class)->find($ingredient_id);
+
+        // check if the user has created this ingredient
+        $user_create_ing = $entityManagerInterface->getRepository(UserCreateIngredient::class)->findOneBy(['ingredient' => $ingredient, 'user' => $this->getUser()]);
+
+        if($user_create_ing== null){
+            $user_create_ing = false;
+        }else{
+            $user_create_ing = true;
+        }
+        
+        $recipes = get_recipes_from_ingredients([$ingredient], $entityManagerInterface);
+
+       if ($user_create_ing and count($recipes) == 0) {
+
+            $entityManagerInterface->remove($ingredient);
+            $entityManagerInterface->flush();
+        }
+
+        
+
+        return $this->redirectToRoute('ingredients_list');
     }
 
 

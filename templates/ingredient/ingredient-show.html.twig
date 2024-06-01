@@ -10,6 +10,18 @@
 
 {% include '/header/header-logged.html.twig' %}
 
+{%if user_create_ing == true%}
+
+    <div class="button-container">
+        {#<button class="button-ingredient" onclick="window.location.href='{{path('ingredient_edit', {'id': ingredient.id})}}'">Modifier</button>#}
+        <a class="button-ingredient supprimer">✏️  Modifier</a>
+        <a class="button-ingredient modifier" href='{{ path('ingredient_delete', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
+    </div>
+
+
+{%endif%}
+
+
 
 <div class="m-5 container-ingredient">
 
