@@ -1,9 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Edit Ingredient</h1>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button class="btn btn-primary">Save changes</button>
-    {{ form_end(form) }}
+{% include '/header/header-logged.html.twig' %}
+
+
+<h1 class="titre-modif-ingr">MODIFICATION DE L'INGRÉDIENT</h1>
+
+<form action="{{ path('ingredient_edit', {'id': ingredient.id}) }}" method="post" enctype="multipart/form-data">
+<div class="m-5 container-ingredient">
+
+    
+
+        <div class="container-left">
+            <h1><span>Ingrédient:</span>{{ingredient.name}}</h1>
+
+            <div class="ingredient-img-container">
+                <img src="{{asset('images/ingredients/'~ingredient.image)}}" alt="{{ingredient.name}}">
+            </div>
+            <input type="file" id="image" name="image" accept="image/png, image/jpeg">
+
+        </div>
+
+        <div class="container-right">
+            <div class="ingredient-noms">
+                <label for="name">Nom:</label>
+                <input type="text" id="name" name="name" value="{{ingredient.name}}" required>
+
+                <br>
+
+                <label for="namemany">Nom au pluriel:</label>
+                <input type="text" id="namemany" name="namemany" value="{{ingredient.namemany}}">
+            </div>
+        </div>
+
+</div>
+
+
+<div class="bouton-modifier-ingredient-container">
+    <button type="submit" class="btn btn-primary">Modifier</button>
+</div>
+
+</form>
+
+
+    
 {% endblock %}

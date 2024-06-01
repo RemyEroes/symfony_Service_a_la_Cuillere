@@ -1,0 +1,41 @@
+.titre-modif-ingr{
+    font-family: 'uber_movebold';
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 1em;
+
+}
+
+
+.container-right .ingredient-noms {
+    font-family: 'uber_movebold';
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+}
+.container-right .ingredient-noms input{
+    padding: 0.5em;
+    font-size: 1em;
+    border: 3px solid tomato;
+    border-radius: 5px;
+}
+
+.container-right .ingredient-noms #name {
+    margin-bottom: 10px;
+}
+
+.bouton-modifier-ingredient-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.bouton-modifier-ingredient-container button{
+    font-family: 'uber_movebold';
+    font-size: 1.5em;
+    padding: 0.5em 1em;
+    background-color: tomato;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

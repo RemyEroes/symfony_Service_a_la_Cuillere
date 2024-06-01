@@ -14,7 +14,7 @@
 
     <div class="button-container">
         {#<button class="button-ingredient" onclick="window.location.href='{{path('ingredient_edit', {'id': ingredient.id})}}'">Modifier</button>#}
-        <a class="button-ingredient supprimer">✏️  Modifier</a>
+        <a class="button-ingredient supprimer" href="{{path('ingredient_edit' , {'id':ingredient.id})}}">✏️  Modifier</a>
         <a class="button-ingredient modifier" href='{{ path('ingredient_delete', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
     </div>
 

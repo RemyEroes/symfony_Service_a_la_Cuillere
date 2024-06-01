@@ -177,6 +177,69 @@ class IngredientController extends AbstractController
         return $this->redirectToRoute('ingredients_list');
     }
 
+    #[Route('/ingredient/modifier/{id<\d+>}', name: 'ingredient_edit')]
+    public function edit(int $id, Request $request, EntityManagerInterface $entityManagerInterface, KernelInterface $kernel): Response
+    {
+        // Only authenticated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        require_once __DIR__ . '/../Utils/move_file_and_get_filemame.php';
+
+        $ingredient = $entityManagerInterface->getRepository(Ingredient::class)->find($id);
+
+        // check if the user has created this ingredient
+        $user_create_ing = $entityManagerInterface->getRepository(UserCreateIngredient::class)->findOneBy(['ingredient' => $ingredient, 'user' => $this->getUser()]);
+
+        if($user_create_ing== null){
+            $user_create_ing = false;
+        }else{
+            $user_create_ing = true;
+        }
+
+        $recipes = get_recipes_from_ingredients([$ingredient], $entityManagerInterface);
+
+
+        if ($user_create_ing and count($recipes) == 0) {
+            if ($request->isMethod('POST')) {
+                $formData = $request->request->all();
+
+                $imageFile = $request->files->get('image') ? $request->files->get('image') : null;
+                $ingredient_nom = $formData['name'] ;
+                $ingredient_nom_pluriel = $formData['namemany'] ? $formData['namemany'] : null;
+                
+
+                //image
+                $imageFile = $request->files->get('image');
+                //si une image, la mettre dans public/images/ingredients
+                if ($imageFile) {
+                    $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $ingredient_nom, $kernel);
+                    $ingredient->setImage($newFilename);
+                }
+
+                $ingredient->setName($ingredient_nom);
+
+                if ($ingredient_nom_pluriel) {
+                    $ingredient->setNameMany($ingredient_nom_pluriel);
+                }
+
+                $entityManagerInterface->persist($ingredient);
+                $entityManagerInterface->flush();
+
+                return $this->redirectToRoute('ingredients_list');
+            }
+
+
+
+
+
+            return $this->render('ingredient/ingredient-edit.html.twig', [
+                'ingredient' => $ingredient
+            ]);
+        }
+
+        return $this->redirectToRoute('ingredients_list');
+    }
+
 
    
 }

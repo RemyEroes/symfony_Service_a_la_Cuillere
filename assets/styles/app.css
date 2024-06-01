@@ -7,6 +7,7 @@
 @import './ajouter-recette.css';
 @import './header.css';
 @import './ingredient-show.css';
+@import './ingredient-edit.css';
 
 .font-uber-bold {
     font-family: 'uber_movebold';
