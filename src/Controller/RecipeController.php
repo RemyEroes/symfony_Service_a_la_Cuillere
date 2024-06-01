@@ -407,6 +407,18 @@ class RecipeController extends AbstractController
                 $entityManagerInterface->flush();
             }
 
+            // supprimer les favoris
+            $favorites = $entityManagerInterface->getRepository(UserFavorite::class)->findBy(['recipe' => $recipe]);
+            foreach ($favorites as $favorite) {
+                $entityManagerInterface->remove($favorite);
+                $entityManagerInterface->flush();
+            }
+
+            //supprimer qui a créé la recette
+            $user_create_recipe = $entityManagerInterface->getRepository(UserCreateRecipe::class)->findOneBy(['recipe' => $recipe]);
+            $entityManagerInterface->remove($user_create_recipe);
+            $entityManagerInterface->flush();
+
             // supprimer la recette
             $entityManagerInterface->remove($recipe);
             $entityManagerInterface->flush();
@@ -415,5 +427,111 @@ class RecipeController extends AbstractController
         return $this->redirectToRoute('recipe_list');
 
     }
+
+
+    // modifier une recette
+    #[Route('/recette/modifier/{id}', name: 'edit_recipe')]
+    public function edit_recipe(Request $request, EntityManagerInterface $entityManagerInterface, int $id, KernelInterface $kernel): Response
+    {
+        // only authentificated users can access this page
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        
+        $recipe = $entityManagerInterface->getRepository(Recipe::class)->find($id);
+
+
+        $recipe_ingredients = $entityManagerInterface->getRepository(Quantity::class)->findBy(['recipe' => $recipe]);
+
+        // Récupérer tous les ingredients et les mesurements
+        $ingredients = $entityManagerInterface->getRepository(Ingredient::class)->findAll();
+        // par orde alphabétique
+        usort($ingredients, function ($a, $b) {
+            return $a->getName() <=> $b->getName();
+        });
+        $measurements = $entityManagerInterface->getRepository(Measurement::class)->findAll();
+
+        // si le formulaire est soumis
+        if ($request->isMethod('POST')) {
+            $formData = $request->request->all();   
+            
+            // Update recipe details
+            $recipe->setName($formData['nom-recette']);
+    
+            // Convert name to slug
+            $slug = strtolower(preg_replace('/[^A-Za-z0-9\-]/', '-', $formData['nom-recette']));
+
+            $recipe->setDuration($formData['temps-prep']);
+            $recipe->setPeople($formData['people']);
+    
+            // Handle image upload
+            $image = $request->files->get('image') ? $request->files->get('image') : null;
+            if ($image) {
+                $newFilename = move_file_and_get_filemame($image, 'recipes', $slug, $kernel);
+                $recipe->setImage($newFilename);
+            }else{
+                $test = $recipe->getImage();
+                $recipe->setImage($test);
+            }
+    
+            $recipe->setSlug($slug);
+            $recipe->setRecipeText($formData['recette']);
+
+            // supprimer l'ancienne recette
+            $old_recipe = $entityManagerInterface->getRepository(Recipe::class)->find($id);
+            $entityManagerInterface->remove($old_recipe);
+    
+            // Save the updated recipe
+            $entityManagerInterface->persist($recipe);
+            $entityManagerInterface->flush();
+
+
+            // retablir les favoris
+            $favorites = $entityManagerInterface->getRepository(UserFavorite::class)->findBy(['recipe' => $old_recipe]);
+            foreach ($favorites as $favorite) {
+                $favorite->setRecipe($recipe);
+                $entityManagerInterface->persist($favorite);
+            }
+
+    
+            // Remove old ingredients
+            $oldIngredients = $entityManagerInterface->getRepository(Quantity::class)->findBy(['recipe' => $recipe]);
+            foreach ($oldIngredients as $ingredient) {
+                $entityManagerInterface->remove($ingredient);
+            }
+            $entityManagerInterface->flush();
+    
+            // Save new ingredients with quantities
+            foreach ($formData['ingredients'] as $ingredient) {
+                // Find ingredient and measurement by name
+                $this_ingredient = $entityManagerInterface->getRepository(Ingredient::class)->findOneBy(['name' => $ingredient['name']]);
+                $this_measurement = $entityManagerInterface->getRepository(Measurement::class)->findOneBy(['name' => $ingredient['measurement']]);
+    
+                // Create and save new Quantity object
+                $quantity = new Quantity();
+                $quantity->setIngredient($this_ingredient);
+                $quantity->setMeasurement($this_measurement);
+                $quantity->setQuantity($ingredient['quantity']);
+                $quantity->setRecipe($recipe);
+    
+                $entityManagerInterface->persist($quantity);
+            }
+            $entityManagerInterface->flush();
+    
+            return $this->redirectToRoute('recipe_list');
+        }
+
+        
+
+
+
+
+        return $this->render('recipe/recipe-edit.html.twig',[
+            'recipe' => $recipe,
+            'recipe_ingredients' => $recipe_ingredients,    
+            'ingredients_all' => $ingredients,
+            'measurements_all' => $measurements
+        ]);
+
+    }
+
 
 }

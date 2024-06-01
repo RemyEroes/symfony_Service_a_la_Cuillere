@@ -26,19 +26,19 @@
             {% else %}
 
                 {% for favorite_recipe in favorite_recipes%}
-                <div class="compte-recettes-container recette-favoris" data-recipe-id="{{ favorite_recipe.recipe.id }}">
-                    <a href="{{ path('recipe_show', {'slug': favorite_recipe.recipe.slug, 'id': favorite_recipe.recipe.id}) }}">
-                        <div class="compte-recettes-heart-container">
-                            <p>♥️</p>
-                        </div>
-                        <div class="compte-recettes-image-container">
-                            <img class="recipe-image" src="{{ asset('images/recipes/' ~ favorite_recipe.recipe.image) }}" alt="{{ favorite_recipe.recipe.name }}">
-                        </div>
-                        <div class="compte-recettes-name-container">
-                            <h3>{{ favorite_recipe.recipe.name|capitalize }}</h3>
-                        </div>
-                    </a>
-                </div>
+                    <div class="compte-recettes-container recette-favoris" data-recipe-id="{{ favorite_recipe.recipe.id }}">
+                        <a href="{{ path('recipe_show', {'slug': favorite_recipe.recipe.slug, 'id': favorite_recipe.recipe.id}) }}">
+                            <div class="compte-recettes-heart-container">
+                                <p>♥️</p>
+                            </div>
+                            <div class="compte-recettes-image-container">
+                                <img class="recipe-image" src="{{ asset('images/recipes/' ~ favorite_recipe.recipe.image) }}" alt="{{ favorite_recipe.recipe.name }}">
+                            </div>
+                            <div class="compte-recettes-name-container">
+                                <h3>{{ favorite_recipe.recipe.name|capitalize }}</h3>
+                            </div>
+                        </a>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>
@@ -48,6 +48,11 @@
         <h2>Mes Créations</h2>
         <div class="compte-creations-recettes">
             <h2>Mes recettes</h2>
+            {% if user_recipes is empty %}
+            <div class="error-no-content">
+                <p>Vous n'avez pas encore ajouté de recettes</p>
+            </div>
+            {% else %}
             <div class="compte-user-recettes">
                 {% for user_recipe in user_recipes%}
                 <div class="compte-recettes-container">
@@ -62,11 +67,14 @@
                 </div>
                  {% endfor %}
             </div>
+            {% endif %}
         </div>
         <div class="compte-creations-ingredients">
             <h2>Mes ingrédients</h2>
             {% if user_ingredients is empty %}
-                Vous n'avez pas encore ajouté d'ingrédients
+            <div class="error-no-content">
+                <p>Vous n'avez pas encore ajouté d'ingrédients</p>
+            </div>
             {% else %}
 
             <div class="compte-user-ingredients">

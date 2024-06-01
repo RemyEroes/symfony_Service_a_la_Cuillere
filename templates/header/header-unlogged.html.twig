@@ -1,19 +1,26 @@
 {#------------------- header ------------------------#}
 
 {% block body %}
-<div class="header-container">
-        <div class="header-logo w-96 h-3/4 ml-6 bg-orange-900 ">
-            <a href="{{ url('home') }}">
-                logo here
-            </a>
-        </div>
-        <div class="header-nav h-3/4 flex justify-between items-center mr-10">
-            <ul class="flex justify-between items-center">
-                <li class="mr-10 p-2 text-xl" ><a href="{{ url('app_login') }}">Login</a></li>
-                <li class="mr-10 p-2 text-xl" ><a href="{{ url('app_register') }}">Register</a></li>
-            </ul>
-        </div>
-</div>
 
+<div class="header-container">
+    <div class="header-logo">
+        <a href="{{ url('home') }}">
+            <img src="{{ asset('images/logo/SCLOGO.png') }}" alt="logo">
+        </a>
+    </div>
+    <div class="header-nav">
+        <div class="links-container">
+            <div class="links-middle">
+                <div class="header-link" ><a href="{{ url('recipe_list') }}">🥗 Recettes</a></div>
+                <div class="header-link" id="ing-link" ><a href="{{ url('ingredients_list') }}">🥕 Ingrédients</a></div>
+            </div>
+
+            <div class="links-right">
+                <div class="header-link" ><a href="{{ url('app_login') }}">Login</a></div>
+                <div class="header-link" ><a href="{{ url('app_register') }}">Register</a></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock body %}

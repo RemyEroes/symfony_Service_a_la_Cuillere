@@ -1,5 +1,6 @@
-if (window.location.pathname === '/recette/ajouter') {
+if (window.location.pathname === '/recette/ajouter'||   window.location.pathname.includes('/recette/modifier/')) {
     document.addEventListener('DOMContentLoaded', function () {
+
 
         function add_new_ingredient() {
             const $ingredients_item = document.querySelector('.ingredients-recette-item').cloneNode(true);

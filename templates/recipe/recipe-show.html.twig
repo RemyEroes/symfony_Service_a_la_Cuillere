@@ -12,11 +12,7 @@
 
 {% if is_creator == true %}
     <div class="button-container">
-        {#
-        <a class="button-ingredient " href="{{path('ingredient_edit' , {'id':ingredient.id})}}">✏️  Modifier</a>
-        <a class="button-ingredient supprimer" href='{{ path('delete_recipe', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
-        #}
-        <a class="button-ingredient supprimer" >✏️  Modifier</a>
+        <a class="button-ingredient " href="{{path('edit_recipe' , {'id':recipe.id})}}">✏️  Modifier</a>
         <a class="button-ingredient supprimer" href='{{ path('delete_recipe', {'id': recipe.id}) }}'">🗑️ Supprimer</a>
     </div>
 {% endif %}
@@ -63,14 +59,17 @@
 
                          <a href="{{ path('ingredient_show', {'id': ingredient.ingredient.id}) }}">
                             <div class="ingredient-show-item">
-                                <img class="ingredient-show-image" src="{{ asset('/images/ingredients/' ~ ingredient.ingredient.image ) }}" alt="image" onerror="this.onerror=null; this.src='{{ asset('/images/ingredients/on-error-ingredient.jpeg') }}'">
+                                <div class="container-imager-show">
+                                    <img class="ingredient-show-image" src="{{ asset('/images/ingredients/' ~ ingredient.ingredient.image ) }}" alt="image" onerror="this.onerror=null; this.src='{{ asset('/images/ingredients/on-error-ingredient.jpeg') }}'">
+                                </div>
+                                
                                 <p class="quantity">{{ingredient.quantity}}
                                     {% if ingredient.measurement.name != "unité" %}
                                         {{ingredient.measurement.name}}
                                     {% endif %}
                                 </p>
                                 <p class="name">
-                                    {% if ingredient.quantity >= 2 %}
+                                    {% if ingredient.quantity >= 2  and  ingredient.ingredient.namemany != NULL %}
                                         {{ingredient.ingredient.namemany}}
                                     {% else %}
                                         {{ingredient.ingredient.name}}

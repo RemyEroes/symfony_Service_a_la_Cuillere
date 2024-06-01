@@ -168,6 +168,13 @@ class IngredientController extends AbstractController
 
        if ($user_create_ing and count($recipes) == 0) {
 
+            // supprimer les relations entre l'ingrédient et les utilisateurs
+            $user_create_ingredients = $entityManagerInterface->getRepository(UserCreateIngredient::class)->findBy(['ingredient' => $ingredient]);
+            foreach ($user_create_ingredients as $user_create_ingredient) {
+                $entityManagerInterface->remove($user_create_ingredient);
+                $entityManagerInterface->flush();
+            }
+
             $entityManagerInterface->remove($ingredient);
             $entityManagerInterface->flush();
         }
@@ -199,7 +206,9 @@ class IngredientController extends AbstractController
         $recipes = get_recipes_from_ingredients([$ingredient], $entityManagerInterface);
 
 
-        if ($user_create_ing and count($recipes) == 0) {
+        if ($user_create_ing) {
+
+
             if ($request->isMethod('POST')) {
                 $formData = $request->request->all();
 
