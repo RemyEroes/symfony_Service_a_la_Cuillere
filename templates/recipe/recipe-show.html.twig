@@ -84,7 +84,7 @@
 
             <div class="form-bottom">
                 <h3>Recette:</h3>
-                <p>{{recipe.recipetext}}</p>
+                <p>{{recipe.recipetext | nl2br}}</p>
             </div>
 
 
@@ -111,6 +111,12 @@
 
 
         <div class="commentaires">
+
+            {% if commentaires is empty %}
+            <div class="error-no-content">
+                <p>Aucun commentaire pour le moment</p>
+            </div>
+            {% endif %}
 
             {% for commentaire in commentaires %}
                 <div class="commentaire-item">

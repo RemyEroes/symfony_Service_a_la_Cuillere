@@ -13,9 +13,10 @@
 {%if user_create_ing == true%}
 
     <div class="button-container">
-        {#<button class="button-ingredient" onclick="window.location.href='{{path('ingredient_edit', {'id': ingredient.id})}}'">Modifier</button>#}
         <a class="button-ingredient supprimer" href="{{path('ingredient_edit' , {'id':ingredient.id})}}">✏️  Modifier</a>
-        <a class="button-ingredient modifier" href='{{ path('ingredient_delete', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
+        {% if recipes is empty %}
+            <a class="button-ingredient modifier" href='{{ path('ingredient_delete', {'id': ingredient.id}) }}'">🗑️ Supprimer</a>
+        {%endif%}
     </div>
 
 
@@ -42,7 +43,7 @@
 
 
     <div class="container-right">
-    <h3>les recettes associées:</h3>
+    <h3>Les recettes associées:</h3>
 
         {% include '/recipe/recipe-list.html.twig' with {'recipes': recipes, 'filters': false, 'show_from_ingredient': true} %}
     </div>
