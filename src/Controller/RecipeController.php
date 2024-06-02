@@ -254,6 +254,7 @@ class RecipeController extends AbstractController
             foreach ($recipe_ids_array as $recipe_id) {
                 delete_user_favorite_recipe($user, $recipe_id, $entityManagerInterface);
             }
+
         }
 
 
@@ -425,6 +426,13 @@ class RecipeController extends AbstractController
             $user_create_recipe = $entityManagerInterface->getRepository(UserCreateRecipe::class)->findOneBy(['recipe' => $recipe]);
             $entityManagerInterface->remove($user_create_recipe);
             $entityManagerInterface->flush();
+
+            //supprimer les commentaires
+            $comments = $entityManagerInterface->getRepository(Commentaire::class)->findBy(['recipe' => $recipe]);
+            foreach ($comments as $comment) {
+                $entityManagerInterface->remove($comment);
+                $entityManagerInterface->flush();
+            }
 
             // supprimer la recette
             $entityManagerInterface->remove($recipe);

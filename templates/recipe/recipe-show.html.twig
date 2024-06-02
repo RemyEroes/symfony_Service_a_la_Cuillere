@@ -63,15 +63,22 @@
                                     <img class="ingredient-show-image" src="{{ asset('/images/ingredients/' ~ ingredient.ingredient.image ) }}" alt="image" onerror="this.onerror=null; this.src='{{ asset('/images/ingredients/on-error-ingredient.jpeg') }}'">
                                 </div>
                                 
-                                <p class="quantity">{{ingredient.quantity}}
-                                    {% if ingredient.measurement.name != "unité" %}
-                                        {{ingredient.measurement.name}}
+                                <p class="quantity">
+                                    {% if ingredient.measurement.name != "VARIABLE" %}
+                                        {{ingredient.quantity}}
+                                        {% if ingredient.measurement.name != "unité" %}
+                                            {{ingredient.measurement.name}}
+                                        {% endif %}
                                     {% endif %}
                                 </p>
                                 <p class="name">
-                                    {% if ingredient.quantity >= 2  and  ingredient.ingredient.namemany != NULL %}
-                                        {{ingredient.ingredient.namemany}}
-                                    {% else %}
+                                    {% if ingredient.measurement.name != "VARIABLE" %}
+                                        {% if ingredient.quantity >= 2  and  ingredient.ingredient.namemany != NULL %}
+                                            {{ingredient.ingredient.namemany}}
+                                        {% else %}
+                                            {{ingredient.ingredient.name}}
+                                        {% endif %}
+                                    {%else%}
                                         {{ingredient.ingredient.name}}
                                     {% endif %}
                                 </p>

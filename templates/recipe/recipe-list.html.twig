@@ -71,7 +71,14 @@
         {% endfor %}
     {% else %}
 
-            {% for recipe_common_ingredients in recipes|reverse %}
+                {% if filters == true %}
+                {% set sorted_recipes = recipes|reverse %}
+            {% else %}
+                {% set sorted_recipes = recipes %}
+            {% endif %}
+
+            {% for recipe_common_ingredients in sorted_recipes %}
+            {#{% for recipe_common_ingredients in recipes|reverse %}#}
                 {% for recipe in recipe_common_ingredients%}
                     <a href="{{ path('recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}">
                         <div class="list-card-recipe-container">
@@ -99,7 +106,11 @@
 
                             {% if filters_ing == true %}
                                 <div class="list-card-common-ingr">
-                                    {{ recipe.common_ingr_number }} ingrédients communs
+                                    {% if recipe.common_ingr_number == 1 %}
+                                        <p>{{ recipe.common_ingr_number }} ingrédient souhaité</p>
+                                    {% else %}
+                                        <p>{{ recipe.common_ingr_number }} ingrédients souhaités</p>
+                                    {% endif %}
                                 </div>
                             {% endif %}
 

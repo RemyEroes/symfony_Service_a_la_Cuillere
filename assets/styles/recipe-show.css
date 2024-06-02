@@ -151,11 +151,11 @@
 
 .commentaire-item{
     width: 70%;
-
     padding: 20px;
-    background-color: rgb(255, 204, 195);
+    background-color: rgb(255 243 241);
     border-radius: 20px;
     margin-bottom: 20px;
+    border: 2px solid #ffb0a2;
 }
 
 .commentaire-header{
@@ -172,14 +172,14 @@
     font-family: 'uber_movebold';
     font-size: 1.1em;
 
-    transform: translateY(-10px);
+    transform: translateY(-20px);
 }
 
 .commentaire-item .commentaire-text{
     font-family: 'uber_movemedium';
     font-size: 0.9em;
 
-    transform: translateY(-10px);
+    transform: translateY(-20px);
 }
 
 

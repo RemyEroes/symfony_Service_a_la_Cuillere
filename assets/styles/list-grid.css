@@ -140,7 +140,19 @@
     font-family: 'uber_movebold';
 }
 
+.list-card-common-ingr{
+    width: 100%;
+}
 
+.list-card-common-ingr p {
+    width: fit-content;
+    font-family: 'uber_movebold';
+    font-size: 13px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    padding: 5px;
+}
 /* hover */
 
 .list-card-recipe-container:hover .list-card-image img{
@@ -151,4 +163,9 @@
 .list-card-recipe-container:hover .list-card-bottom-container{
     background-color: #fdbcb0;
     transition: all 0.3s ease-in-out;
+}
+
+.list-card-recipe-container:hover .list-card-common-ingr p{
+    transform: translateY(10px);
+    transition: all 0.3s;
 }
