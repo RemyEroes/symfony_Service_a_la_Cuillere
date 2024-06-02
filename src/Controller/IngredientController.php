@@ -96,6 +96,7 @@ class IngredientController extends AbstractController
 
                     //image
                     $imageFile = $request->files->get('image-'.$ingredient_part);
+
                     //si une image, la mettre dans public/images/ingredients
                     if ($imageFile) {
                         $newFilename = move_file_and_get_filemame($imageFile, 'ingredients', $name_ingredient, $kernel);

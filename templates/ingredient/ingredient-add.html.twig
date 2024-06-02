@@ -1,42 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ajouter un ingrédient:</h1>
 
-    <form method="post" action="{{ path('ingredient_add') }}" enctype="multipart/form-data">
-        
-        <div class="form-ingredient">
-            <div class="form-group">
-                <label for="name-ingredient-1">Nom</label>
-                <input type="text" id="name-ingredient-1" name="name-ingredient-1" class="form-control" required>
-            </div>
+{% include '/header/header-logged.html.twig' %}
 
-            <div class="form-group checkbox-nom-pluriel">
-                <label for="nom-pluriel">Nom au pluriel ?</label>
-                <input type="radio" id="oui" name="choice-1" value="oui">
-                <label for="oui">Oui</label><br>
-                <input type="radio" id="non" name="choice-1" value="non" checked>
-                <label for="non">Non</label><br>
-            </div>
+    <div class="m-5 container-add-ingredient">
+        <h1>Ajouter un ingrédient:</h1>
 
-            <div class="form-group nom-pluriel-1">
-                <label for="name-pluriel-1">Nom au pluriel</label>
-                <input type="text" id="name-pluriel-1" name="name-pluriel-1" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="image-1">Image</label>
-                <input type="file" id="image-1" name="image-1" class="form-control" accept="image/jpeg, image/png">
-            </div>
-
+        <form method="post" action="{{ path('ingredient_add') }}" enctype="multipart/form-data">
             
-         </div>
+            <div class="form-ingredient">
 
-        <button class="add-more-button">add More ingredients</button>
+                <button class="delete-button">🗑️</button>
 
+                <div class="form-ingredient-left">
+                    <div class="form-group">
+                        <label for="name-ingredient-1">Nom</label>
+                        <input type="text" id="name-ingredient-1" name="name-ingredient-1" class="form-control" required>
+                    </div>
 
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+                    <div class="form-group checkbox-nom-pluriel">
+                        <label for="nom-pluriel">Nom au pluriel ?</label>
+                        <br>
+                        <div class="reponse">
+                            <div>
+                            <input type="radio" id="oui" name="choice-1" value="oui">
+                            <label for="oui">Oui</label><br>
+                            </div>
+                            <div>
+                            <input type="radio" id="non" name="choice-1" value="non" checked>
+                            <label for="non">Non</label><br>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group nom-pluriel-1">
+                        <label for="name-pluriel-1">Nom au pluriel</label>
+                        <input type="text" id="name-pluriel-1" name="name-pluriel-1" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-ingredient-right">
+                    <div class="form-group">
+                        <label for="image-1">Image (max 2MB)</label>
+                        <input type="file" id="image-1" name="image-1" class="form-control" accept="image/jpeg, image/png">
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <button class="add-more-button">+ Ingrédient supplémentaire</button>
+
+            <br>    
+
+            <div class="container-sauvegarder">
+            <button type="submit" class="btn btn-primary sauvegarder">Sauvegarder</button>
+        </div>
+        </form>
+    </div>
 
     
 {% endblock %}

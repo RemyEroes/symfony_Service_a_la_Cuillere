@@ -1,5 +1,4 @@
 .form-group{
-    background-color: orange;
     padding-bottom: 20px;
     width: 100%;
 }
@@ -13,4 +12,123 @@ input[type="text"]{
 .add-more-button{
     background-color: green;
     border: 1px solid black;
+}
+
+
+.container-add-ingredient h1{
+    font-family: 'uber_movebold';
+    font-size: 1.5em;
+    padding: 20px;
+}
+
+.form-ingredient{
+    display: flex;
+    padding: 20px;
+
+    width: 80%;
+
+    border-radius: 20px;
+    margin-top: 15px;
+
+    background-color: rgb(255, 182, 170);
+    position: relative;
+}
+
+.form-ingredient .delete-button{
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: white;
+    border: 2px solid tomato;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+}
+
+.form-ingredient-left{
+    width: 350px;
+    border-right: 2px solid tomato;
+}
+.form-ingredient-left label{
+    font-family: 'uber_movebold';
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+.form-ingredient-left label{
+    font-family: 'uber_movebold';
+    font-size: 1.2em;
+    padding: 10px;
+}
+
+.form-ingredient-left input{
+    font-family: 'uber_movebold';
+    font-size: 1.2em;
+    padding: 10px;
+    border: 2px solid tomato;
+    border-radius: 10px;
+}
+
+.form-ingredient-left .reponse{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.form-ingredient-left .reponse div{
+   padding: 5px;
+   border-radius: 10px;
+   border: 2px solid tomato;
+   cursor: pointer;
+}
+
+.form-ingredient-right{
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+}
+.form-ingredient-right{
+    font-family: 'uber_movemedium';
+}
+
+.add-more-button{
+    background-color: rgb(255, 84, 58);
+
+    font-family: 'uber_movebold';
+    font-size: 0.8em;
+    padding: 4px;
+    border-radius: 10px;
+    border: 2px solid tomato;
+    margin-top: 10px;
+    margin-left: 20px;
+
+    cursor: pointer;
+}
+
+
+.container-sauvegarder{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+    border-top: 2px solid rgb(200, 200, 200);
+}
+
+.sauvegarder{
+    background-color: rgb(255, 255, 255);
+
+    font-family: 'uber_movebold';
+    font-size: 1.2em;
+    padding: 4px;
+    border-radius: 10px;
+    border: 2px solid tomato;
+    color: tomato;
+    margin-top: 20px;
+
+    cursor: pointer;
 }

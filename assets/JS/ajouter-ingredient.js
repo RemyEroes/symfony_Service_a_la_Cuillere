@@ -40,7 +40,20 @@ if (window.location.pathname === '/ingredient/ajouter') {
             if (input.type === 'text' || input.type === 'file') {
                 input.value = '';
             }
+            // si c'est un input radio 
+            if (input.type === 'radio') {
+                if (input.value === 'non') {
+                    input.checked = true;
+                }else{
+                    input.checked = false;
+                }
+
+            }
         });
+
+        // rendre visible le bouton de suppression
+        let delete_button = new_ingredient_part.querySelector('.delete-button');
+        delete_button.style.display = 'block';
 
         // Changer les noms et ids
         let label_name = new_ingredient_part.querySelector('label[for^="name-ingredient-"]');
@@ -84,7 +97,11 @@ if (window.location.pathname === '/ingredient/ajouter') {
 
         // Ajouter la nouvelle partie d'ingrédient
         last_ingredient_part.after(new_ingredient_part);
+
+        add_remove_listeners();
+        check_file_size()
     }
+
 
     add_ingredient.addEventListener('click', (event) => {
         // Prevent default
@@ -92,5 +109,57 @@ if (window.location.pathname === '/ingredient/ajouter') {
 
         addIngredientPart();
     });
+
+
+    // Remove ingredient
+    function add_remove_listeners() {
+        const buttons_remove_ingredient = document.querySelectorAll('.form-ingredient .delete-button');
+
+
+        buttons_remove_ingredient.forEach(function (button) {
+            //si il y a un event listener déjà attaché, on le supprime
+            button.removeEventListener('click', function (event) {
+                event.preventDefault();
+
+                const ingredientItem = button.parentElement;
+                ingredientItem.remove();
+            });
+        });
+
+    
+        buttons_remove_ingredient.forEach(function (button) {
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                const ingredientItem = button.parentElement;
+                ingredientItem.remove();
+            });
+        });
+    }
+    function disable_first_remove_button() {
+        const button_remove_ingredient = document.querySelector('.form-ingredient .delete-button');
+        button_remove_ingredient.style.display = 'none';
+    }
+
+    disable_first_remove_button();
+    add_remove_listeners();
+    
+
+    function check_file_size(){
+        let inputs = document.querySelectorAll('input[type="file"]');
+
+        inputs.forEach((input) => {
+            input.removeEventListener('change', () => {});
+
+            input.addEventListener('change', () => {
+                let file = input.files[0];
+                if (file.size > 2 * 1024 * 1024) { // 2MB in bytes
+                    alert('File size exceeds 2MB.');
+                    input.value = '';
+                }
+            });
+        })
+    }
+    check_file_size()
 
 }
