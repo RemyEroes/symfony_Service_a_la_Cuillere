@@ -65,3 +65,12 @@
 #ing-link{
     margin-left: 20px;
 }
+
+
+.links-right{
+    display: flex;
+}
+
+.links-right .header-link{
+    margin-right: 10px;
+}
